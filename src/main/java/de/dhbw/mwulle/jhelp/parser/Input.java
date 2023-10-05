@@ -10,7 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Input {
-    private URL url;
+    private final URL url;
+
     public Input(URL url) {
         this.url = url;
     }

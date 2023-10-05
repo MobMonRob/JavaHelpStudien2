@@ -5,8 +5,8 @@
 package de.dhbw.mwulle.jhelp.parser.toc;
 
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItem;
-import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNodeFactory;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
+import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNodeFactory;
 import de.dhbw.mwulle.jhelp.parser.BasicParser;
 import de.dhbw.mwulle.jhelp.parser.Input;
 import org.w3c.dom.Document;
@@ -37,21 +37,21 @@ public class TocParser extends BasicParser {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
             return createTOCItemNode(element);
-        }else {
+        } else {
             throw new RuntimeException();
         }
     }
 
     private static TOCItemNode createTOCItemNode(Element element) {
-        if (element.getTagName().equals("tocitem")){
+        if (element.getTagName().equals("tocitem")) {
             TOCItem tocItem = createTocItem(element);
-            if (element.hasChildNodes()){
+            if (element.hasChildNodes()) {
                 TOCItemNodeFactory factory = new TOCItemNodeFactory();
                 for (int i = 0; i < element.getChildNodes().getLength(); i++) {
                     Node node = element.getChildNodes().item(i);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element e = (Element) node;
-                        if (e.getTagName().equals("tocitem")){
+                        if (e.getTagName().equals("tocitem")) {
                             factory.addTocItem(createTOCItemNode(element));
                         }
                     }
@@ -71,16 +71,16 @@ public class TocParser extends BasicParser {
     }
 
     private static TOCItem createTocItem(Element element) {
-            TOCItem tocItem = new TOCItem();
+        TOCItem tocItem = new TOCItem();
 
-            if (element.hasAttribute("text")) {
-                String text = element.getAttribute("text");
-                tocItem.setText(text);
-            }
-            if (element.hasAttribute("target")) {
-                String helpID = element.getAttribute("target");
-                tocItem.setHelpID(helpID);
-            }
-            return tocItem;
+        if (element.hasAttribute("text")) {
+            String text = element.getAttribute("text");
+            tocItem.setText(text);
+        }
+        if (element.hasAttribute("target")) {
+            String helpID = element.getAttribute("target");
+            tocItem.setHelpID(helpID);
+        }
+        return tocItem;
     }
 }

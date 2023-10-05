@@ -16,12 +16,12 @@ import org.openide.windows.WindowManager;
  * @author Melvin Wulle
  */
 @ServiceProvider(service = HelpCtx.Displayer.class)
-public class JHelp implements HelpCtx.Displayer{
+public class JHelp implements HelpCtx.Displayer {
     private static final JHelp INSTANCE = new JHelp();
 
     public JHelp() {
     }
-    
+
     public static JHelp getInstance() {
         return INSTANCE;
     }

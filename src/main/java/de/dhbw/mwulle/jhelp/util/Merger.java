@@ -18,8 +18,8 @@ import java.util.Map;
  * @author Melvin Wulle
  */
 public class Merger {
-    public static Map<String,String> mergeMaps(Map<String,String> map1, Map<String, String> map2) {
-        Map<String,String> map3 = new HashMap<>(map1);
+    public static Map<String, String> mergeMaps(Map<String, String> map1, Map<String, String> map2) {
+        Map<String, String> map3 = new HashMap<>(map1);
         map3.putAll(map2);
         return map3;
     }
@@ -27,7 +27,7 @@ public class Merger {
     public static TOCItemNode appendTree(TOCItemNode node1, TOCItemNode node2) {
         List<Node> nodes = node1.getChildren().snapshot();
         TOCItemNodeFactory factory = new TOCItemNodeFactory();
-        for (Node node: nodes) {
+        for (Node node : nodes) {
             factory.addTocItem((TOCItemNode) node);
         }
         factory.addTocItem(node2);

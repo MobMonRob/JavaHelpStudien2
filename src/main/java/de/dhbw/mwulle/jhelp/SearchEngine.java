@@ -13,7 +13,12 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexableField;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.QueryBuilder;
 
@@ -34,7 +39,7 @@ public class SearchEngine {
     private static final Path INDEX_DIRECTORY = Paths.get(".help_index");
 
     public synchronized static void index(HelpSet helpSet) {
-        for (String helpID: helpSet.getIndex().keySet()) {
+        for (String helpID : helpSet.getIndex().keySet()) {
             String title = helpSet.getIndex().get(helpID);
             String content = helpSet.getMap().get(helpID);
             Document document = createIndexDocumentOf(helpID, title, content);

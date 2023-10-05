@@ -11,7 +11,6 @@ import de.dhbw.mwulle.jhelp.util.Merger;
 import java.util.Map;
 
 /**
- *
  * @author Melvin Wulle
  */
 public class HelpSet {
@@ -32,20 +31,20 @@ public class HelpSet {
         return this.index;
     }
 
-    public Map<String, String> getMap() {
-        return this.map;
-    }
-
-    public TOCItemNode getToc() {
-        return this.toc;
-    }
-
     void setIndex(Map<String, String> index) {
         this.index = index;
     }
 
+    public Map<String, String> getMap() {
+        return this.map;
+    }
+
     void setMap(Map<String, String> map) {
         this.map = map;
+    }
+
+    public TOCItemNode getToc() {
+        return this.toc;
     }
 
     void setToc(TOCItemNode toc) {

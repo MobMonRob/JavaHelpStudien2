@@ -21,7 +21,7 @@ public class HelpSetBuilder {
     }
 
     public void setIndex(Map<String, String> index) {
-        if (helpSet.getIndex() != null){
+        if (helpSet.getIndex() != null) {
             helpSet.setIndex(Merger.mergeMaps(helpSet.getIndex(), index));
         } else {
             helpSet.setMap(index);
@@ -29,7 +29,7 @@ public class HelpSetBuilder {
     }
 
     public void setMap(Map<String, String> map) {
-        if (helpSet.getMap() != null){
+        if (helpSet.getMap() != null) {
             helpSet.setMap(Merger.mergeMaps(helpSet.getMap(), map));
         } else {
             helpSet.setMap(map);
@@ -37,7 +37,7 @@ public class HelpSetBuilder {
     }
 
     public void setToc(TOCItemNode toc) {
-        if (helpSet.getToc() != null){
+        if (helpSet.getToc() != null) {
             helpSet.setToc(Merger.appendTree(helpSet.getToc(), toc));
         } else {
             helpSet.setToc(toc);

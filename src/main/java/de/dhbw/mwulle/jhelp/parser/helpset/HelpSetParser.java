@@ -59,7 +59,7 @@ public class HelpSetParser extends BasicParser {
         for (int i = 0; i < mapsNodeList.getLength(); i++) {
             Node mapsNode = mapsNodeList.item(i);
 
-            if (mapsNode.hasChildNodes()){
+            if (mapsNode.hasChildNodes()) {
                 NodeList mapsChildNodeList = mapsNode.getChildNodes();
 
                 for (int j = 0; j < mapsChildNodeList.getLength(); j++) {

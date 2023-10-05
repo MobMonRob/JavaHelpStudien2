@@ -105,19 +105,16 @@ public class HelpSetResult {
                 return false;
             } else {
                 View view = (View) object;
-                if (!view.name.equals(name)){
+                if (!view.name.equals(name)) {
                     return false;
                 }
-                if (!view.label.equals(label)){
+                if (!view.label.equals(label)) {
                     return false;
                 }
-                if (!view.type.equals(type)){
+                if (!view.type.equals(type)) {
                     return false;
                 }
-                if (!view.data.equals(data)){
-                    return false;
-                }
-                return true;
+                return view.data.equals(data);
             }
         }
     }

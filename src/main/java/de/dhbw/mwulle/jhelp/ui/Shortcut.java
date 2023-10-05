@@ -4,10 +4,6 @@
  */
 package de.dhbw.mwulle.jhelp.ui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import de.dhbw.mwulle.jhelp.JHelp;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -17,6 +13,9 @@ import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle.Messages;
 
 import javax.swing.FocusManager;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 @ActionID(
         category = "Edit",
@@ -27,8 +26,8 @@ import javax.swing.FocusManager;
         displayName = "#CTL_Shortcut"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Help", position = 100, separatorAfter = 150),
-    @ActionReference(path = "Shortcuts", name = "F1")
+        @ActionReference(path = "Menu/Help", position = 100, separatorAfter = 150),
+        @ActionReference(path = "Shortcuts", name = "F1")
 })
 @Messages("CTL_Shortcut=Get Help")
 public final class Shortcut implements ActionListener {
@@ -39,7 +38,7 @@ public final class Shortcut implements ActionListener {
         if (helpCtx != null) {
             return helpCtx;
         }
-        return HelpCtx.DEFAULT_HELP ;
+        return HelpCtx.DEFAULT_HELP;
     }
 
     @Override

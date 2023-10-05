@@ -18,12 +18,20 @@ import de.dhbw.mwulle.jhelp.parser.map.MapResult;
 import de.dhbw.mwulle.jhelp.parser.toc.TocParser;
 import de.dhbw.mwulle.jhelp.parser.toc.TocResult;
 import de.dhbw.mwulle.jhelp.util.Merger;
-import org.openide.filesystems.*;
+import org.openide.filesystems.FileAttributeEvent;
+import org.openide.filesystems.FileChangeListener;
+import org.openide.filesystems.FileEvent;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileRenameEvent;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.HelpCtx;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Manages all detected HelpSets.
@@ -32,9 +40,9 @@ import java.util.*;
  */
 public class HelpSetManager {
     private static final HelpSetManager manager = new HelpSetManager();
-    private HelpSet master;
+    private final HelpSet master;
 
-    private HelpSetManager () {
+    private HelpSetManager() {
         master = master();
     }
 
@@ -56,7 +64,7 @@ public class HelpSetManager {
     public static HelpSetManager getInstance() {
         return manager;
     }
-    
+
     public boolean containsHelp(String helpID) {
         return contentOf(helpID) != null && indexOf(helpID) != null;
     }
@@ -75,10 +83,10 @@ public class HelpSetManager {
 
     private void scan() {
         try {
-            FileObject folder =  FileUtil.getConfigRoot().getFileSystem().findResource("Services/JavaHelp");
+            FileObject folder = FileUtil.getConfigRoot().getFileSystem().findResource("Services/JavaHelp");
             if (folder != null) {
                 folder.getFileSystem().addFileChangeListener(new HelpConfigChangeListener());
-                for (FileObject helpSetFiles: folder.getChildren()) {
+                for (FileObject helpSetFiles : folder.getChildren()) {
                     loadHelpSet(helpSetFiles.toURL());
                 }
             }
@@ -99,7 +107,7 @@ public class HelpSetManager {
             List<HelpSetResult.View> views = helpSetResult.getViews();
 
             Map<String, String> map = new HashMap<>();
-            for (String mapReference: maps) {
+            for (String mapReference : maps) {
                 try {
                     Optional<MapResult> optionalMapResult = MapParser.parse(new Input(url, mapReference));
                     assert optionalMapResult.isPresent();
@@ -110,7 +118,7 @@ public class HelpSetManager {
             }
 
             Map<String, String> index = new HashMap<>();
-            for (HelpSetResult.View view: views) {
+            for (HelpSetResult.View view : views) {
                 if (view.getType().equals("javax.help.IndexView")) {
                     try {
                         Optional<IndexResult> optionalIndexResult = IndexParser.parse(new Input(url, view.getData()));
@@ -125,7 +133,7 @@ public class HelpSetManager {
             TOCItem root = new TOCItem();
             root.setText(helpSetResult.getTitle());
             TOCItemNode toc = new TOCItemNode(root);
-            for (HelpSetResult.View view: views) {
+            for (HelpSetResult.View view : views) {
                 if (view.getType().equals("javax.help.TOCView")) {
                     try {
                         Optional<TocResult> optionalTocResult = TocParser.parse(new Input(url, view.getData()));
