@@ -127,6 +127,7 @@
             <version>2.11.0</version>
         </dependency>
         <dependency>
+            <!-- For Full text searching -->
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>9.5.0</version>
@@ -147,6 +148,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.5.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
