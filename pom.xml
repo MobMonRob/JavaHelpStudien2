@@ -17,7 +17,10 @@
                 <version>4.8</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <verifyRuntime>false</verifyRuntime>
+                    <!--
+                        TODO: 10/22/23 For now allow everything, limit in future.
+                    -->
+                    <publicPackages>de.dhbw.mwulle.jhelp.*</publicPackages>
                 </configuration>
             </plugin>
             <plugin>
@@ -119,6 +122,11 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-explorer</artifactId>
+            <version>${nbplatform.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-loaders</artifactId>
             <version>${nbplatform.version}</version>
         </dependency>
         <dependency>
