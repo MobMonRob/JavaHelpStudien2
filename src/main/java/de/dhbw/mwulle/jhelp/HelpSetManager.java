@@ -95,7 +95,7 @@ public class HelpSetManager {
         }
     }
 
-    private void loadHelpSet(URL url) {
+    public void loadHelpSet(URL url) {
         HelpSetBuilder builder = new HelpSetBuilder();
 
         Optional<HelpSetResult> optionalHelpSetResult = HelpSetParser.parse(new Input(url));

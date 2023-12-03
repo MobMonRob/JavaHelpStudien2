@@ -1,0 +1,2 @@
+<!ELEMENT helpsetlink EMPTY>
+<!ATTLIST helpsetlink url CDATA #REQUIRED>
