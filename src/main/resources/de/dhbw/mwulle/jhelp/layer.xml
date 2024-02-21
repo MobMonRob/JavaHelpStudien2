@@ -11,7 +11,7 @@
             <file name="com-mwulle-jHelp-ui-HelpViewerTopComponent.instance_hidden"/>
         </folder>
     </folder>
-  
+
     <folder name="Services">
         <folder name="JavaHelp">
             <file name="helpsetlink.dtd" url="helpsetlink.dtd"/>
@@ -21,10 +21,10 @@
     <folder name="xml">
         <folder name="lookups">
             <folder name="DHBW_Karlsruhe">
-                    <file name="DTD_JavaHelp_Help_Set_link_1_0.instance">
-                        <attr name="instanceOf" stringvalue="org.openide.loaders.Environment$Provider"/>
-                        <attr name="instanceCreate" newvalue="de.dhbw.mwulle.jhelp.netbeans.impl.HelpSetLinkReader"/>
-                    </file>
+                <file name="DTD_JavaHelp_Help_Set_link_1_0.instance">
+                    <attr name="instanceOf" stringvalue="org.openide.loaders.Environment$Provider"/>
+                    <attr name="instanceCreate" newvalue="de.dhbw.mwulle.jhelp.netbeans.impl.HelpSetLinkReader"/>
+                </file>
             </folder>
         </folder>
     </folder>

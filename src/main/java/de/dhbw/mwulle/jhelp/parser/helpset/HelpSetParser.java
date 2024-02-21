@@ -33,6 +33,7 @@ public class HelpSetParser extends BasicParser {
 
             return Optional.of(result);
         } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
             return Optional.empty();
         }
     }

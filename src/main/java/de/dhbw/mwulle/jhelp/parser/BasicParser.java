@@ -26,6 +26,7 @@ public abstract class BasicParser {
             document.normalize();
             return document;
         } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
