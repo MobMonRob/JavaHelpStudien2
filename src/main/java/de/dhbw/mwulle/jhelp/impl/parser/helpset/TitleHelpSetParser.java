@@ -8,9 +8,9 @@ public class TitleHelpSetParser implements HelpSetParser {
     @Override
     public void parse(HelpSetBuilder builder, Element element) {
         if (builder.getTitle() != null) {
-            throw new IllegalStateException(String.format("Title was already set to '%s' but got other title node with value %s", builder.getTitle(), element.getNodeValue()));
+            throw new IllegalStateException(String.format("Title was already set to '%s' but got other title node with value %s", builder.getTitle(), element.getTextContent()));
         }
 
-        builder.setTitle(element.getNodeValue());
+        builder.setTitle(element.getTextContent());
     }
 }

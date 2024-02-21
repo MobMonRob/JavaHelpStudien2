@@ -47,14 +47,15 @@ public class ViewHelpSetParser implements HelpSetParser {
         Element typeElement = ParserUtil.getElementByTagName("type", element);
         Element dataElement = ParserUtil.getElementByTagName("data", element);
 
-        ViewFactory viewFactory = viewFactories.get(typeElement.getNodeValue());
+        ViewFactory viewFactory = viewFactories.get(typeElement.getTextContent());
+        System.out.println("Got View type Value: " + typeElement.getTextContent());
 
         if (viewFactory == null) {
             // TODO log this, we ignore unknown factories -> forwards compatibility
             return;
         }
 
-        viewBuilder.setType(typeElement.getNodeValue());
+        viewBuilder.setType(typeElement.getTextContent());
 
         View view = viewFactory.createView(viewBuilder, dataElement);
 

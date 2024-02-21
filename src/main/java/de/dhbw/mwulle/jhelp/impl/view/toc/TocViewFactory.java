@@ -24,10 +24,10 @@ public class TocViewFactory implements ViewFactory {
 
     @Override
     public View createView(ViewBuilder viewBuilder, Element dataTag) {
-        Document document = documentFunction.apply(ParserUtil.resolve(viewBuilder.getDirectory(), dataTag.getNodeValue()));
+        Document document = documentFunction.apply(ParserUtil.resolve(viewBuilder.getDirectory(), dataTag.getTextContent()));
 
         // TODO 2024-02-21: Handle language attribute from root index element
-        Element root = ParserUtil.getElementByTagName("index", document);
+        Element root = ParserUtil.getElementByTagName("toc", document);
 
         return new TocView(viewBuilder.getName(), viewBuilder.getLabel(), viewBuilder.getType(), viewBuilder.getMergeType(), viewBuilder.getLanguage(), parser.parse(root));
     }

@@ -22,7 +22,7 @@ public class IndexViewFactory implements ViewFactory {
 
     @Override
     public View createView(ViewBuilder viewBuilder, Element dataTag) {
-        Document document = documentFunction.apply(ParserUtil.resolve(viewBuilder.getDirectory(), dataTag.getNodeValue()));
+        Document document = documentFunction.apply(ParserUtil.resolve(viewBuilder.getDirectory(), dataTag.getTextContent()));
 
         // TODO 2024-02-21: Handle language attribute from root index element
         Element root = ParserUtil.getElementByTagName("index", document);

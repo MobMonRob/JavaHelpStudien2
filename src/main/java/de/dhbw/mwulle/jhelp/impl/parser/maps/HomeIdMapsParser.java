@@ -7,9 +7,9 @@ public class HomeIdMapsParser implements MapsParser {
     @Override
     public void parse(MapsBuilder builder, Element element) {
         if (builder.getHomeId() != null) {
-            throw new IllegalStateException(String.format("Home id was already set to '%s' but got another home id node with value %s", builder.getHomeId(), element.getNodeValue()));
+            throw new IllegalStateException(String.format("Home id was already set to '%s' but got another home id node with value %s", builder.getHomeId(), element.getTextContent()));
         }
 
-        builder.setHomeId(element.getNodeValue());
+        builder.setHomeId(element.getTextContent());
     }
 }

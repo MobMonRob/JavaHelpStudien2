@@ -7,9 +7,9 @@ public class NameViewParser implements ViewParser {
     @Override
     public void parse(ViewBuilder builder, Element element) {
         if (builder.getName() != null) {
-            throw new IllegalStateException(String.format("Name was already set to '%s' but got other name node with value %s", builder.getName(), element.getNodeValue()));
+            throw new IllegalStateException(String.format("Name was already set to '%s' but got other name node with value %s", builder.getName(), element.getTextContent()));
         }
 
-        builder.setName(element.getNodeValue());
+        builder.setName(element.getTextContent());
     }
 }
