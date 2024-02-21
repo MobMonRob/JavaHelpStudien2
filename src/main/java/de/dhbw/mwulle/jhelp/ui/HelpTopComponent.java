@@ -8,18 +8,22 @@ import de.dhbw.mwulle.jhelp.HelpSetManager;
 import de.dhbw.mwulle.jhelp.SearchEngine;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItem;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
+import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.TocItemNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
-import org.openide.util.*;
-import org.openide.windows.TopComponent;
+import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.Utilities;
+import org.openide.windows.TopComponent;
 
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.util.Collection;
 import java.util.List;
@@ -45,11 +49,11 @@ import java.util.Optional;
         preferredID = "HelpTopComponent"
 )
 @Messages({
-    "CTL_HelpTopComponentAction=Help",
-    "CTL_HelpTopComponent=Help",
-    "HINT_HelpTopComponent=This is a Help window"
+        "CTL_HelpTopComponentAction=Help",
+        "CTL_HelpTopComponent=Help",
+        "HINT_HelpTopComponent=This is a Help window"
 })
-public final class HelpTopComponent extends TopComponent implements LookupListener, ExplorerManager.Provider{
+public final class HelpTopComponent extends TopComponent implements LookupListener, ExplorerManager.Provider {
     private final transient ExplorerManager explorerManager = new ExplorerManager();
     private Lookup.Result<TOCItem> result = null;
 
@@ -83,7 +87,8 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
     }
 
     public void setRootContext(TOCItemNode rootContext) {
-        explorerManager.setRootContext(rootContext);
+        TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
+        explorerManager.setRootContext(otherRoot);
     }
 
     /**
@@ -109,6 +114,8 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
 
         setNextFocusableComponent(TOCPane);
 
+        tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+
         TOCPane.setNextFocusableComponent(searchPane);
 
         javax.swing.GroupLayout TOCPaneLayout = new javax.swing.GroupLayout(TOCPane);
@@ -121,7 +128,7 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
             TOCPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TOCPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tocPane, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE))
+                .addComponent(tocPane, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.TOCPane.TabConstraints.tabTitle"), TOCPane); // NOI18N
@@ -149,7 +156,7 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
                 .addContainerGap()
                 .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))
+                .addComponent(resultsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.searchPane.TabConstraints.tabTitle"), searchPane); // NOI18N
@@ -202,7 +209,7 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
             .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedPane)
+                    .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -271,7 +278,7 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
     public void resultChanged(LookupEvent ev) {
         Collection<? extends TOCItem> allTOCItems = result.allInstances();
         Optional<TOCItem> optional = (Optional<TOCItem>) allTOCItems.stream().findFirst();
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             TOCItem item = optional.get();
             String content = HelpSetManager.getInstance().contentOf(item.getHelpID());
             setContent(content);
