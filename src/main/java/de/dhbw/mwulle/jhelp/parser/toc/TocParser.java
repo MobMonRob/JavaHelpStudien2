@@ -27,6 +27,8 @@ public class TocParser extends BasicParser {
 
             return Optional.of(result);
         } catch (Exception e) {
+            System.out.println("Error parse TocParser " + e.getMessage());
+            e.printStackTrace(System.out);
             return Optional.empty();
         }
     }
