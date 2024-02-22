@@ -88,6 +88,7 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
 
     public void setRootContext(TOCItemNode rootContext) {
         TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
+        ((BeanTreeView) tocPane).setRootVisible(false);
         explorerManager.setRootContext(otherRoot);
     }
 
