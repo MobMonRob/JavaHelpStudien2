@@ -1,4 +1,4 @@
-package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view;
+package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc;
 
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItem;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;

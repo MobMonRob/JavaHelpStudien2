@@ -6,10 +6,15 @@ package de.dhbw.mwulle.jhelp.ui;
 
 import de.dhbw.mwulle.jhelp.HelpSetManager;
 import de.dhbw.mwulle.jhelp.SearchEngine;
+import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItem;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
+import de.dhbw.mwulle.jhelp.impl.view.index.IndexView;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.TocItemNode;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexItemNode;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexViewComponent;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocItemNode;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocViewComponent;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -25,6 +30,7 @@ import org.openide.windows.TopComponent;
 
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -53,15 +59,17 @@ import java.util.Optional;
         "CTL_HelpTopComponent=Help",
         "HINT_HelpTopComponent=This is a Help window"
 })
-public final class HelpTopComponent extends TopComponent implements LookupListener, ExplorerManager.Provider {
+public final class HelpTopComponent extends TopComponent /* implements LookupListener, ExplorerManager.Provider*/ {
     private final transient ExplorerManager explorerManager = new ExplorerManager();
+    private final transient ExplorerManager firstExplorerManager = new ExplorerManager();
+    private final transient ExplorerManager secondExplorerManager = new ExplorerManager();
     private Lookup.Result<TOCItem> result = null;
 
     public HelpTopComponent() {
         initComponents();
         setName(Bundle.CTL_HelpTopComponent());
         setToolTipText(Bundle.HINT_HelpTopComponent());
-        associateLookup(ExplorerUtils.createLookup(explorerManager, getActionMap()));
+        // associateLookup(ExplorerUtils.createLookup(explorerManager, getActionMap()));
         contentEditorPane.setContentType("text/html");
         contentEditorPane.setEditable(false);
         contentEditorPane.setOpaque(false);
@@ -76,6 +84,12 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
                 }
             }
         });
+        HelpSet helpset = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class);
+        try {
+            contentEditorPane.setPage(helpset.getHelpSetMap().getMapIds().get(0).getUrl());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setContent(String text) {
@@ -116,6 +130,11 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
         setNextFocusableComponent(TOCPane);
 
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabbedPaneStateChanged(evt);
+            }
+        });
 
         TOCPane.setNextFocusableComponent(searchPane);
 
@@ -161,6 +180,8 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
         );
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.searchPane.TabConstraints.tabTitle"), searchPane); // NOI18N
+
+        setUpPaneTabs();
 
         org.openide.awt.Mnemonics.setLocalizedText(contentHeader, org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.contentHeader.text")); // NOI18N
 
@@ -227,11 +248,25 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setUpPaneTabs() {
+        TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
+        IndexItemNode indexItemNode = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof IndexView).map(d -> (IndexView) d).map(IndexItemNode::createRootNode).findFirst().get();
+        tabbedPane.addTab("Test", new TocViewComponent(otherRoot));
+        tabbedPane.addTab("Test2", new IndexViewComponent(indexItemNode));
+    }
+
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         String searchQuery = searchField.getText();
         List<String> result = SearchEngine.searchFor(searchQuery);
         System.out.println(result);
     }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
+        // TODO 2024-02-22: Fill it
+        // tabbedPane.getSelectedComponent()
+        TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
+        explorerManager.setRootContext(otherRoot);
+    }//GEN-LAST:event_tabbedPaneStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel TOCPane;
@@ -250,12 +285,12 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
     @Override
     public void componentOpened() {
         result = Utilities.actionsGlobalContext().lookupResult(TOCItem.class);
-        result.addLookupListener(this);
+        // result.addLookupListener(this);
     }
 
     @Override
     public void componentClosed() {
-        result.removeLookupListener(this);
+        // result.removeLookupListener(this);
     }
 
     void writeProperties(java.util.Properties p) {
@@ -269,7 +304,7 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
-
+/*
     @Override
     public ExplorerManager getExplorerManager() {
         return explorerManager;
@@ -286,4 +321,5 @@ public final class HelpTopComponent extends TopComponent implements LookupListen
             setContentHeader(item.getText());
         }
     }
+ */
 }
