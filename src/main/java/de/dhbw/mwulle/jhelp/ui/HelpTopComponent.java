@@ -4,7 +4,6 @@
  */
 package de.dhbw.mwulle.jhelp.ui;
 
-import de.dhbw.mwulle.jhelp.SearchEngine;
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
@@ -15,7 +14,6 @@ import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocItemNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 import org.openide.util.NbBundle.Messages;
@@ -98,7 +96,7 @@ public final class HelpTopComponent extends TopComponent {
 
     public void setRootContext(TOCItemNode rootContext) {
         TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
-        ((BeanTreeView) tocPane).setRootVisible(false);
+        // ((BeanTreeView) tocPane).setRootVisible(false);
     }
 
     /**
@@ -111,18 +109,10 @@ public final class HelpTopComponent extends TopComponent {
 
         panel = new javax.swing.JPanel();
         tabbedPane = new javax.swing.JTabbedPane();
-        TOCPane = new javax.swing.JPanel();
-        tocPane = new BeanTreeView();
-        searchPane = new javax.swing.JPanel();
-        searchField = new javax.swing.JTextField();
-        resultsPane = new javax.swing.JScrollPane();
-        resultList = new javax.swing.JList<>();
         contentPanel = new javax.swing.JPanel();
         contentHeader = new javax.swing.JLabel();
         contentScrollPane = new javax.swing.JScrollPane();
         contentEditorPane = new javax.swing.JEditorPane();
-
-        setNextFocusableComponent(TOCPane);
 
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -130,51 +120,6 @@ public final class HelpTopComponent extends TopComponent {
                 tabbedPaneStateChanged(evt);
             }
         });
-
-        TOCPane.setNextFocusableComponent(searchPane);
-
-        javax.swing.GroupLayout TOCPaneLayout = new javax.swing.GroupLayout(TOCPane);
-        TOCPane.setLayout(TOCPaneLayout);
-        TOCPaneLayout.setHorizontalGroup(
-            TOCPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tocPane, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-        );
-        TOCPaneLayout.setVerticalGroup(
-            TOCPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TOCPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tocPane, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
-        );
-
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.TOCPane.TabConstraints.tabTitle"), TOCPane); // NOI18N
-
-        searchPane.setNextFocusableComponent(searchField);
-
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
-
-        resultsPane.setViewportView(resultList);
-
-        javax.swing.GroupLayout searchPaneLayout = new javax.swing.GroupLayout(searchPane);
-        searchPane.setLayout(searchPaneLayout);
-        searchPaneLayout.setHorizontalGroup(
-            searchPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(resultsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-            .addComponent(searchField)
-        );
-        searchPaneLayout.setVerticalGroup(
-            searchPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(searchPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
-        );
-
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.searchPane.TabConstraints.tabTitle"), searchPane); // NOI18N
 
         setUpPaneTabs();
 
@@ -262,12 +207,6 @@ public final class HelpTopComponent extends TopComponent {
         }
     }
 
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        String searchQuery = searchField.getText();
-        List<String> result = SearchEngine.searchFor(searchQuery);
-        System.out.println(result);
-    }//GEN-LAST:event_searchFieldActionPerformed
-
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         // TODO 2024-02-22: Fill it
         // tabbedPane.getSelectedComponent()
@@ -275,18 +214,12 @@ public final class HelpTopComponent extends TopComponent {
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel TOCPane;
     private javax.swing.JEditorPane contentEditorPane;
     private javax.swing.JLabel contentHeader;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JScrollPane contentScrollPane;
     private javax.swing.JPanel panel;
-    private javax.swing.JList<String> resultList;
-    private javax.swing.JScrollPane resultsPane;
-    private javax.swing.JTextField searchField;
-    private javax.swing.JPanel searchPane;
     private javax.swing.JTabbedPane tabbedPane;
-    private javax.swing.JScrollPane tocPane;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
