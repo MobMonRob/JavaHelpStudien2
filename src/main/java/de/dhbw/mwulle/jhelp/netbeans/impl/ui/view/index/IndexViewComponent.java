@@ -18,6 +18,7 @@ public class IndexViewComponent extends JPanel implements Lookup.Provider, Explo
     public IndexViewComponent(IndexItemNode root) {
         super(new GridLayout()); // We use Grid, so that the bean tree view fits nicely
         lookup = ExplorerUtils.createLookup(explorerManager, new ActionMap());
+        lookup.lookupResult(IndexItemNode.class).addLookupListener(new IndexChangeListener());
         beanTreeView.setRootVisible(false);
         beanTreeView.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 

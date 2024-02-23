@@ -26,4 +26,26 @@ public class HelpSet {
     public List<View> getViews() {
         return views;
     }
+
+    public MapId findMapId(String target) {
+        if (helpSetMap == null) {
+            return null;
+        }
+
+        return findMapId(helpSetMap.getMapIds(), target);
+    }
+
+    private MapId findMapId(List<MapId> mapIds, String target) {
+        for (MapId mapId : mapIds) {
+            if (target.equals(mapId.getTarget())) {
+                return mapId;
+            }
+            MapId other = findMapId(mapId.getChildren(), target);
+            if (other != null) {
+                return other;
+            }
+        }
+
+        return null;
+    }
 }

@@ -9,6 +9,7 @@ import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocItemNode;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -18,11 +19,15 @@ import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
 
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -52,11 +57,12 @@ import java.util.List;
 })
 public final class HelpTopComponent extends TopComponent {
 
+    private final List<Lookup> lookups = new ArrayList<>();
+
     public HelpTopComponent() {
         initComponents();
         setName(Bundle.CTL_HelpTopComponent());
         setToolTipText(Bundle.HINT_HelpTopComponent());
-        // associateLookup(ExplorerUtils.createLookup(explorerManager, getActionMap()));
         contentEditorPane.setContentType("text/html");
         contentEditorPane.setEditable(false);
         contentEditorPane.setOpaque(false);
@@ -77,6 +83,9 @@ public final class HelpTopComponent extends TopComponent {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        lookups.add(Lookups.singleton(new ContentManagerImpl()));
+        associateLookup(new ProxyLookup(lookups.toArray(new Lookup[0])));
     }
 
     public void setContent(String text) {
@@ -240,10 +249,14 @@ public final class HelpTopComponent extends TopComponent {
 
         for (View view : helpSet.getViews()) {
             System.out.println("Got View to open: " + view.getClass());
-            for (UiViewFactory uiViewFactory : uiViewFactories) {
+            dance: for (UiViewFactory uiViewFactory : uiViewFactories) {
                 if (view.getClass() == uiViewFactory.getViewClass()) {
-                    tabbedPane.addTab(NbBundle.getMessage(HelpTopComponent.class, String.format("HelpTopComponent.tabbedPane.view.%s.tabTitle", view.getClass().getName())), uiViewFactory.createComponent(view));
-                    continue;
+                    Component component = uiViewFactory.createComponent(view);
+                    if (component instanceof Lookup.Provider) { // TODO 2024-02-23: Maybe there is a better way?
+                        lookups.add(((Lookup.Provider) component).getLookup());
+                    }
+                    tabbedPane.addTab(NbBundle.getMessage(HelpTopComponent.class, String.format("HelpTopComponent.tabbedPane.view.%s.tabTitle", view.getClass().getName())), component);
+                    break dance;
                 }
             }
         }
@@ -295,5 +308,17 @@ public final class HelpTopComponent extends TopComponent {
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+    }
+
+    private class ContentManagerImpl implements ContentManager {
+
+        @Override
+        public void setContent(URL url) {
+            try {
+                contentEditorPane.setPage(url);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

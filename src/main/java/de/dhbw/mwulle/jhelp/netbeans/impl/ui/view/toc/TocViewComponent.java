@@ -18,6 +18,7 @@ public class TocViewComponent extends JPanel implements Lookup.Provider, Explore
     public TocViewComponent(TocItemNode root) {
         super(new GridLayout());
         lookup = ExplorerUtils.createLookup(explorerManager, new ActionMap());
+        lookup.lookupResult(TocItemNode.class).addLookupListener(new TocChangeListener());
         beanTreeView.setRootVisible(false);
         beanTreeView.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
