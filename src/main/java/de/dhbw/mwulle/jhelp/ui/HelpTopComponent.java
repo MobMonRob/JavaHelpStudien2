@@ -4,32 +4,20 @@
  */
 package de.dhbw.mwulle.jhelp.ui;
 
-import de.dhbw.mwulle.jhelp.HelpSetManager;
 import de.dhbw.mwulle.jhelp.SearchEngine;
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.View;
-import de.dhbw.mwulle.jhelp.helpset.toc.TOCItem;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
-import de.dhbw.mwulle.jhelp.impl.view.index.IndexView;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexItemNode;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexViewComponent;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocItemNode;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocViewComponent;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.explorer.ExplorerManager;
-import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
-import org.openide.util.LookupEvent;
-import org.openide.util.LookupListener;
 import org.openide.util.NbBundle;
 import org.openide.util.NbBundle.Messages;
-import org.openide.util.Utilities;
-import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
 
 import javax.swing.event.HyperlinkEvent;
@@ -37,7 +25,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Top component which displays something.
@@ -63,11 +50,7 @@ import java.util.Optional;
         "CTL_HelpTopComponent=Help",
         "HINT_HelpTopComponent=This is a Help window"
 })
-public final class HelpTopComponent extends TopComponent /* implements LookupListener, ExplorerManager.Provider*/ {
-    private final transient ExplorerManager explorerManager = new ExplorerManager();
-    private final transient ExplorerManager firstExplorerManager = new ExplorerManager();
-    private final transient ExplorerManager secondExplorerManager = new ExplorerManager();
-    private Lookup.Result<TOCItem> result = null;
+public final class HelpTopComponent extends TopComponent {
 
     public HelpTopComponent() {
         initComponents();
@@ -107,7 +90,6 @@ public final class HelpTopComponent extends TopComponent /* implements LookupLis
     public void setRootContext(TOCItemNode rootContext) {
         TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
         ((BeanTreeView) tocPane).setRootVisible(false);
-        explorerManager.setRootContext(otherRoot);
     }
 
     /**
@@ -277,7 +259,6 @@ public final class HelpTopComponent extends TopComponent /* implements LookupLis
         // TODO 2024-02-22: Fill it
         // tabbedPane.getSelectedComponent()
         TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
-        explorerManager.setRootContext(otherRoot);
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -296,7 +277,6 @@ public final class HelpTopComponent extends TopComponent /* implements LookupLis
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        result = Utilities.actionsGlobalContext().lookupResult(TOCItem.class);
         // result.addLookupListener(this);
     }
 
@@ -316,22 +296,4 @@ public final class HelpTopComponent extends TopComponent /* implements LookupLis
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
-/*
-    @Override
-    public ExplorerManager getExplorerManager() {
-        return explorerManager;
-    }
-
-    @Override
-    public void resultChanged(LookupEvent ev) {
-        Collection<? extends TOCItem> allTOCItems = result.allInstances();
-        Optional<TOCItem> optional = (Optional<TOCItem>) allTOCItems.stream().findFirst();
-        if (optional.isPresent()) {
-            TOCItem item = optional.get();
-            String content = HelpSetManager.getInstance().contentOf(item.getHelpID());
-            setContent(content);
-            setContentHeader(item.getText());
-        }
-    }
- */
 }
