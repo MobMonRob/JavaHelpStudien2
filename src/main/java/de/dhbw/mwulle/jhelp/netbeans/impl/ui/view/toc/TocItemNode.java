@@ -11,10 +11,6 @@ import java.util.List;
 
 public class TocItemNode extends AbstractNode {
 
-    public static TocItemNode createRootNode(TocView tocView) {
-        return new TocItemNode(Children.create(new TocItemNodeFactory(tocView.getTocItems()), false), null);
-    }
-
     private final TocItem tocItem;
 
     public TocItemNode(Children children, TocItem tocItem) {
@@ -23,6 +19,10 @@ public class TocItemNode extends AbstractNode {
         if (tocItem != null) {
             setDisplayName(tocItem.getText());
         }
+    }
+
+    public static TocItemNode createRootNode(TocView tocView) {
+        return new TocItemNode(Children.create(new TocItemNodeFactory(tocView.getTocItems()), false), null);
     }
 
     public TocItem getTocItem() {

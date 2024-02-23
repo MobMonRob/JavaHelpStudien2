@@ -7,10 +7,12 @@ package de.dhbw.mwulle.jhelp.ui;
 import de.dhbw.mwulle.jhelp.HelpSetManager;
 import de.dhbw.mwulle.jhelp.SearchEngine;
 import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItem;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
 import de.dhbw.mwulle.jhelp.impl.view.index.IndexView;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexItemNode;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexViewComponent;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocItemNode;
@@ -24,8 +26,10 @@ import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import org.openide.util.NbBundle;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
+import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
 
 import javax.swing.event.HyperlinkEvent;
@@ -249,10 +253,18 @@ public final class HelpTopComponent extends TopComponent /* implements LookupLis
     }// </editor-fold>//GEN-END:initComponents
 
     private void setUpPaneTabs() {
-        TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
-        IndexItemNode indexItemNode = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof IndexView).map(d -> (IndexView) d).map(IndexItemNode::createRootNode).findFirst().get();
-        tabbedPane.addTab("Test", new TocViewComponent(otherRoot));
-        tabbedPane.addTab("Test2", new IndexViewComponent(indexItemNode));
+        HelpSet helpSet = Lookup.getDefault().lookup(HelpSet.class);
+        Collection<? extends UiViewFactory> uiViewFactories = Lookup.getDefault().lookupAll(UiViewFactory.class);
+
+        for (View view : helpSet.getViews()) {
+            System.out.println("Got View to open: " + view.getClass());
+            for (UiViewFactory uiViewFactory : uiViewFactories) {
+                if (view.getClass() == uiViewFactory.getViewClass()) {
+                    tabbedPane.addTab(NbBundle.getMessage(HelpTopComponent.class, String.format("HelpTopComponent.tabbedPane.view.%s.tabTitle", view.getClass().getName())), uiViewFactory.createComponent(view));
+                    continue;
+                }
+            }
+        }
     }
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
