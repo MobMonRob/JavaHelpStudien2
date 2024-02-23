@@ -22,24 +22,32 @@ public class IndexItemNode extends AbstractNode {
     }
 
     public static IndexItemNode createRootNode(IndexView indexView) {
-        return new IndexItemNode(Children.create(new TocItemNodeFactory(indexView.getIndexItems()), false), null);
+        return new IndexItemNode(createChildren(indexView.getIndexItems()), null);
+    }
+
+    private static Children createChildren(List<IndexItem> indexItems) {
+        if (indexItems.isEmpty()) {
+            return Children.LEAF;
+        }
+
+        return Children.create(new IndexItemNodeFactory(indexItems), false);
     }
 
     public IndexItem getIndexItem() {
         return indexItem;
     }
 
-    private static class TocItemNodeFactory extends ChildFactory<IndexItem> {
+    private static class IndexItemNodeFactory extends ChildFactory<IndexItem> {
 
         private final List<IndexItem> children;
 
-        public TocItemNodeFactory(List<IndexItem> children) {
+        public IndexItemNodeFactory(List<IndexItem> children) {
             this.children = children;
         }
 
         @Override
         protected Node createNodeForKey(IndexItem key) {
-            return new IndexItemNode(Children.create(new TocItemNodeFactory(key.getChildren()), false), key);
+            return new IndexItemNode(createChildren(key.getChildren()), key);
         }
 
         @Override

@@ -22,7 +22,15 @@ public class TocItemNode extends AbstractNode {
     }
 
     public static TocItemNode createRootNode(TocView tocView) {
-        return new TocItemNode(Children.create(new TocItemNodeFactory(tocView.getTocItems()), false), null);
+        return new TocItemNode(createChildren(tocView.getTocItems()), null);
+    }
+
+    private static Children createChildren(List<TocItem> tocItems) {
+        if (tocItems.isEmpty()) {
+            return Children.LEAF;
+        }
+
+        return Children.create(new TocItemNodeFactory(tocItems), false);
     }
 
     public TocItem getTocItem() {
@@ -39,7 +47,7 @@ public class TocItemNode extends AbstractNode {
 
         @Override
         protected Node createNodeForKey(TocItem key) {
-            return new TocItemNode(Children.create(new TocItemNodeFactory(key.getChildren()), false), key);
+            return new TocItemNode(createChildren(key.getChildren()), key);
         }
 
         @Override
