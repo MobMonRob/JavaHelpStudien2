@@ -4,13 +4,11 @@
  */
 package de.dhbw.mwulle.jhelp.ui;
 
-import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
-import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc.TocItemNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -75,9 +73,9 @@ public final class HelpTopComponent extends TopComponent {
                 }
             }
         });
-        HelpSet helpset = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class);
+        HelpSetProvider helpSetProvider = Lookup.getDefault().lookup(HelpSetProvider.class);
         try {
-            contentEditorPane.setPage(helpset.getHelpSetMap().getMapIds().get(0).getUrl());
+            contentEditorPane.setPage(helpSetProvider.getMasterHelpSet().getHelpSetMap().getMapIds().get(0).getUrl());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +93,7 @@ public final class HelpTopComponent extends TopComponent {
     }
 
     public void setRootContext(TOCItemNode rootContext) {
-        TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
+        // TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
         // ((BeanTreeView) tocPane).setRootVisible(false);
     }
 
@@ -189,10 +187,10 @@ public final class HelpTopComponent extends TopComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setUpPaneTabs() {
-        HelpSet helpSet = Lookup.getDefault().lookup(HelpSet.class);
+        HelpSetProvider helpSetProvider = Lookup.getDefault().lookup(HelpSetProvider.class);
         Collection<? extends UiViewFactory> uiViewFactories = Lookup.getDefault().lookupAll(UiViewFactory.class);
 
-        for (View view : helpSet.getViews()) {
+        for (View view : helpSetProvider.getMasterHelpSet().getViews()) {
             System.out.println("Got View to open: " + view.getClass());
             dance: for (UiViewFactory uiViewFactory : uiViewFactories) {
                 if (view.getClass() == uiViewFactory.getViewClass()) {
@@ -210,7 +208,7 @@ public final class HelpTopComponent extends TopComponent {
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         // TODO 2024-02-22: Fill it
         // tabbedPane.getSelectedComponent()
-        TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
+        // TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

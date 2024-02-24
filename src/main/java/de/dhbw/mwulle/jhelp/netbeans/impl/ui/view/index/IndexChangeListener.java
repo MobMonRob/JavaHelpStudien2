@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import org.openide.util.Lookup;
@@ -13,10 +14,17 @@ public class IndexChangeListener implements LookupListener {
     public void resultChanged(LookupEvent ev) {
         IndexItemNode indexItemNode = Utilities.actionsGlobalContext().lookup(IndexItemNode.class);
         ContentManager contentManager = Utilities.actionsGlobalContext().lookup(ContentManager.class);
-        HelpSet helpSet = Lookup.getDefault().lookup(HelpSet.class);
+        HelpSetProvider helpSetProvider = Lookup.getDefault().lookup(HelpSetProvider.class);
 
-        if (indexItemNode == null || contentManager == null || helpSet == null) {
+        if (indexItemNode == null || contentManager == null || helpSetProvider == null) {
             // TODO 2024-02-22: Maybe log this?
+            return;
+        }
+
+        HelpSet helpSet = helpSetProvider.getMasterHelpSet();
+
+        if (helpSet == null) {
+            // TODO 2024-02-24: Maybe log this?
             return;
         }
 
