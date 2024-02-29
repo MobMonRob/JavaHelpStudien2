@@ -36,6 +36,6 @@ public class TocChangeListener implements LookupListener {
             return;
         }
 
-        contentManager.setContent(mapId.getUrl());
+        contentManager.setContent(mapId);
     }
 }

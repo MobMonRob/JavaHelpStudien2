@@ -24,7 +24,6 @@ import org.openide.windows.TopComponent;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -98,7 +97,7 @@ public final class HelpTopComponent extends TopComponent {
             helpSetLookup = Lookups.singleton(helpSet);
             MapId mapId = helpSet.findMapId(helpSet.getHelpSetMap().getHomeId());
             if (mapId != null && mapId.getUrl() != null) {
-                contentManager.setContent(mapId.getUrl());
+                contentManager.setContent(mapId);
             } else {
                 setEmptyPage();
             }
@@ -296,9 +295,12 @@ public final class HelpTopComponent extends TopComponent {
     private class ContentManagerImpl implements ContentManager {
 
         @Override
-        public void setContent(URL url) {
+        public void setContent(MapId mapId) {
+            if (mapId.getUrl() == null) {
+                throw new IllegalArgumentException("Map id url must not be null");
+            }
             try {
-                contentEditorPane.setPage(url);
+                contentEditorPane.setPage(mapId.getUrl());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
