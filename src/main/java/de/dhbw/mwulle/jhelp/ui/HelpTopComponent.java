@@ -4,7 +4,9 @@
  */
 package de.dhbw.mwulle.jhelp.ui;
 
+import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
@@ -53,7 +55,11 @@ import java.util.List;
 })
 public final class HelpTopComponent extends TopComponent {
 
-    private final List<Lookup> lookups = new ArrayList<>();
+    private final ContentManager contentManager = new ContentManagerImpl();
+    private Lookup tabbedPaneLookup = Lookup.EMPTY;
+    // Currently open help set
+    private Lookup helpSetLookup = Lookup.EMPTY;
+    private HelpSet helpSet = null;
 
     public HelpTopComponent() {
         initComponents();
@@ -73,23 +79,57 @@ public final class HelpTopComponent extends TopComponent {
                 }
             }
         });
-        HelpSetProvider helpSetProvider = Lookup.getDefault().lookup(HelpSetProvider.class);
-        try {
-            contentEditorPane.setPage(helpSetProvider.getMasterHelpSet().getHelpSetMap().getMapIds().get(0).getUrl());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
+        List<Lookup> lookups = new ArrayList<>();
         lookups.add(Lookups.singleton(new ContentManagerImpl()));
+        lookups.add(Lookups.proxy(() -> helpSetLookup));
+        lookups.add(Lookups.proxy(() -> tabbedPaneLookup));
         associateLookup(new ProxyLookup(lookups.toArray(new Lookup[0])));
     }
 
+    public void setHelpSet(HelpSet helpSet) {
+        if (this.helpSet == helpSet) {
+            return;
+        }
+
+        this.helpSet = helpSet;
+
+        if (helpSet != null) {
+            helpSetLookup = Lookups.singleton(helpSet);
+            MapId mapId = helpSet.findMapId(helpSet.getHelpSetMap().getHomeId());
+            if (mapId != null && mapId.getUrl() != null) {
+                contentManager.setContent(mapId.getUrl());
+            } else {
+                setEmptyPage();
+            }
+
+            setUpPaneTabs();
+            helpSetLookup = Lookups.singleton(helpSet);
+        } else {
+            helpSetLookup = Lookup.EMPTY;
+            setEmptyPage();
+            clearPaneTabs();
+        }
+    }
+
+    private void setEmptyPage() {
+        contentEditorPane.setText(" <!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<body>\n" +
+                "\n" +
+                "<h1>404</h1>\n" +
+                "<p>No HelpSet present or the home id is not found.</p>\n" +
+                "\n" +
+                "</body>\n" +
+                "</html> ");
+    }
+
     public void setContent(String text) {
-        contentEditorPane.setText(text);
+        // contentEditorPane.setText(text);
     }
 
     public void setContentHeader(String text) {
-        contentHeader.setText(text);
+        // contentHeader.setText(text);
     }
 
     public void setRootContext(TOCItemNode rootContext) {
@@ -118,8 +158,6 @@ public final class HelpTopComponent extends TopComponent {
                 tabbedPaneStateChanged(evt);
             }
         });
-
-        setUpPaneTabs();
 
         org.openide.awt.Mnemonics.setLocalizedText(contentHeader, org.openide.util.NbBundle.getMessage(HelpTopComponent.class, "HelpTopComponent.contentHeader.text")); // NOI18N
 
@@ -187,10 +225,15 @@ public final class HelpTopComponent extends TopComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setUpPaneTabs() {
-        HelpSetProvider helpSetProvider = Lookup.getDefault().lookup(HelpSetProvider.class);
-        Collection<? extends UiViewFactory> uiViewFactories = Lookup.getDefault().lookupAll(UiViewFactory.class);
+        clearPaneTabs();
+        if (helpSet == null) {
+            return;
+        }
 
-        for (View view : helpSetProvider.getMasterHelpSet().getViews()) {
+        Collection<? extends UiViewFactory> uiViewFactories = Lookup.getDefault().lookupAll(UiViewFactory.class);
+        List<Lookup> lookups = new ArrayList<>();
+
+        for (View view : helpSet.getViews()) {
             System.out.println("Got View to open: " + view.getClass());
             dance: for (UiViewFactory uiViewFactory : uiViewFactories) {
                 if (view.getClass() == uiViewFactory.getViewClass()) {
@@ -203,6 +246,12 @@ public final class HelpTopComponent extends TopComponent {
                 }
             }
         }
+
+        tabbedPaneLookup = new ProxyLookup(lookups.toArray(new Lookup[0]));
+    }
+
+    private void clearPaneTabs() {
+        tabbedPane.removeAll();
     }
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
@@ -219,14 +268,17 @@ public final class HelpTopComponent extends TopComponent {
     private javax.swing.JPanel panel;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
+
     @Override
     public void componentOpened() {
-        // result.addLookupListener(this);
+        if (helpSet == null) {
+            // Set help set if not already set
+            setHelpSet(Lookup.getDefault().lookup(HelpSetProvider.class).getMasterHelpSet());
+        }
     }
 
     @Override
     public void componentClosed() {
-        // result.removeLookupListener(this);
     }
 
     void writeProperties(java.util.Properties p) {
