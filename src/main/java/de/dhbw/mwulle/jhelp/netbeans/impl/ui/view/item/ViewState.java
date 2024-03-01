@@ -1,4 +1,4 @@
-package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index;
+package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
 public enum ViewState {
 

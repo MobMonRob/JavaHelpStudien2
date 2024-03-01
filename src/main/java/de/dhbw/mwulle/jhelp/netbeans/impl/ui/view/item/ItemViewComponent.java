@@ -1,7 +1,9 @@
-package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc;
+package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
-import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
+import de.dhbw.mwulle.jhelp.impl.view.item.Item;
+import de.dhbw.mwulle.jhelp.impl.view.item.ItemView;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexItemNode;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
@@ -10,25 +12,29 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
 
-public class TocViewComponent extends JPanel implements Lookup.Provider, ExplorerManager.Provider {
+public class ItemViewComponent<T extends Item<T>> extends JPanel implements Lookup.Provider, ExplorerManager.Provider {
 
     private final ExplorerManager explorerManager = new ExplorerManager();
     private final BeanTreeView beanTreeView = new BeanTreeView();
+    private final ItemView<T> view;
+    private final Class<? extends ItemNode<T>> itemNodeClass;
     private final Lookup lookup;
     private ViewState viewState = ViewState.READY;
-    private final TocView view;
 
-    public TocViewComponent(Lookup.Provider parentProvider, TocItemNode root, TocView view) {
+
+    public ItemViewComponent(ItemView<T> view, Class<? extends ItemNode<T>> itemNodeClass, Lookup.Provider parentProvider, ItemNode<T> root) {
         super(new GridLayout());
         this.view = view;
-        lookup = ExplorerUtils.createLookup(explorerManager, new ActionMap());
+        this.itemNodeClass = itemNodeClass;
+        this.lookup = ExplorerUtils.createLookup(explorerManager, new ActionMap());
+
         beanTreeView.setRootVisible(false);
         beanTreeView.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         explorerManager.setRootContext(root);
 
-        parentProvider.getLookup().lookupResult(TocItemNode.class).addLookupListener(new TocChangeListener(this));
-        parentProvider.getLookup().lookupResult(MapId.class).addLookupListener(new MapIdChangeListener(this));
+        parentProvider.getLookup().lookupResult(itemNodeClass).addLookupListener(new ItemNodeChangeListener<>(this));
+        parentProvider.getLookup().lookupResult(MapId.class).addLookupListener(new MapIdChangeListener<>(this));
 
         add(beanTreeView);
     }
@@ -43,15 +49,19 @@ public class TocViewComponent extends JPanel implements Lookup.Provider, Explore
         return lookup;
     }
 
+    public ItemView<T> getView() {
+        return view;
+    }
+
+    public Class<? extends ItemNode<T>> getItemNodeClass() {
+        return itemNodeClass;
+    }
+
     public ViewState getViewState() {
         return viewState;
     }
 
     public void setViewState(ViewState viewState) {
         this.viewState = viewState;
-    }
-
-    public TocView getView() {
-        return view;
     }
 }

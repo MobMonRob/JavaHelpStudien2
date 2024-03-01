@@ -2,27 +2,20 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc;
 
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItem;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
-import org.openide.nodes.AbstractNode;
-import org.openide.nodes.ChildFactory;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item.ItemNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 
 import java.util.List;
 
-public class TocItemNode extends AbstractNode {
+public class TocItemNode extends ItemNode<TocItem> {
 
-    private final TocItem tocItem;
-
-    public TocItemNode(Children children, TocItem tocItem) {
-        super(children);
-        this.tocItem = tocItem;
-        if (tocItem != null) {
-            setDisplayName(tocItem.getText());
-        }
+    protected TocItemNode(Children children, TocItem item) {
+        super(children, item);
     }
 
     public static TocItemNode createRootNode(TocView tocView) {
-        return new TocItemNode(createChildren(tocView.getTocItems()), null);
+        return new TocItemNode(createChildren(tocView.getItems()), null);
     }
 
     private static Children createChildren(List<TocItem> tocItems) {
@@ -33,27 +26,15 @@ public class TocItemNode extends AbstractNode {
         return Children.create(new TocItemNodeFactory(tocItems), false);
     }
 
-    public TocItem getTocItem() {
-        return tocItem;
-    }
+    private static class TocItemNodeFactory extends ItemNodeFactory<TocItem>{
 
-    private static class TocItemNodeFactory extends ChildFactory<TocItem> {
-
-        private final List<TocItem> children;
-
-        public TocItemNodeFactory(List<TocItem> children) {
-            this.children = children;
+        protected TocItemNodeFactory(List<TocItem> children) {
+            super(children);
         }
 
         @Override
         protected Node createNodeForKey(TocItem key) {
             return new TocItemNode(createChildren(key.getChildren()), key);
-        }
-
-        @Override
-        protected boolean createKeys(List<TocItem> toPopulate) {
-            toPopulate.addAll(children);
-            return true;
         }
     }
 }
