@@ -9,6 +9,7 @@ import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
+import de.dhbw.mwulle.jhelp.netbeans.ChangeAbleLookupHolder;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -55,10 +56,13 @@ import java.util.List;
 public final class HelpTopComponent extends TopComponent {
 
     private final ContentManager contentManager = new ContentManagerImpl();
+
+    private final ChangeAbleLookupHolder<MapId> mapIdLookupHolder = new ChangeAbleLookupHolder<>();
+
     private Lookup tabbedPaneLookup = Lookup.EMPTY;
+    private final Lookup proxyTabbedPaneLookup = Lookups.proxy(() -> tabbedPaneLookup);
     // Currently open help set
-    private Lookup helpSetLookup = Lookup.EMPTY;
-    private HelpSet helpSet = null;
+    private final ChangeAbleLookupHolder<HelpSet> helpSetLookupHolder = new ChangeAbleLookupHolder<>();
 
     public HelpTopComponent() {
         initComponents();
@@ -81,20 +85,18 @@ public final class HelpTopComponent extends TopComponent {
 
         List<Lookup> lookups = new ArrayList<>();
         lookups.add(Lookups.singleton(new ContentManagerImpl()));
-        lookups.add(Lookups.proxy(() -> helpSetLookup));
-        lookups.add(Lookups.proxy(() -> tabbedPaneLookup));
+        lookups.add(helpSetLookupHolder.getLookup());
+        lookups.add(proxyTabbedPaneLookup);
+        lookups.add(mapIdLookupHolder.getLookup());
         associateLookup(new ProxyLookup(lookups.toArray(new Lookup[0])));
     }
 
     public void setHelpSet(HelpSet helpSet) {
-        if (this.helpSet == helpSet) {
+        if (!helpSetLookupHolder.changeValue(helpSet)) {
             return;
         }
 
-        this.helpSet = helpSet;
-
         if (helpSet != null) {
-            helpSetLookup = Lookups.singleton(helpSet);
             MapId mapId = helpSet.findMapId(helpSet.getHelpSetMap().getHomeId());
             if (mapId != null && mapId.getUrl() != null) {
                 contentManager.setContent(mapId);
@@ -103,9 +105,7 @@ public final class HelpTopComponent extends TopComponent {
             }
 
             setUpPaneTabs();
-            helpSetLookup = Lookups.singleton(helpSet);
         } else {
-            helpSetLookup = Lookup.EMPTY;
             setEmptyPage();
             clearPaneTabs();
         }
@@ -225,18 +225,18 @@ public final class HelpTopComponent extends TopComponent {
 
     private void setUpPaneTabs() {
         clearPaneTabs();
-        if (helpSet == null) {
+        if (helpSetLookupHolder.getValue() == null) {
             return;
         }
 
         Collection<? extends UiViewFactory> uiViewFactories = Lookup.getDefault().lookupAll(UiViewFactory.class);
         List<Lookup> lookups = new ArrayList<>();
 
-        for (View view : helpSet.getViews()) {
+        for (View view : helpSetLookupHolder.getValue().getViews()) {
             System.out.println("Got View to open: " + view.getClass());
             dance: for (UiViewFactory uiViewFactory : uiViewFactories) {
                 if (view.getClass() == uiViewFactory.getViewClass()) {
-                    Component component = uiViewFactory.createComponent(view);
+                    Component component = uiViewFactory.createComponent(this, view);
                     if (component instanceof Lookup.Provider) { // TODO 2024-02-23: Maybe there is a better way?
                         lookups.add(((Lookup.Provider) component).getLookup());
                     }
@@ -247,6 +247,7 @@ public final class HelpTopComponent extends TopComponent {
         }
 
         tabbedPaneLookup = new ProxyLookup(lookups.toArray(new Lookup[0]));
+        proxyTabbedPaneLookup.lookup((Class<Object>) null); // Causes the change events to be called
     }
 
     private void clearPaneTabs() {
@@ -270,7 +271,7 @@ public final class HelpTopComponent extends TopComponent {
 
     @Override
     public void componentOpened() {
-        if (helpSet == null) {
+        if (helpSetLookupHolder.getValue() == null) {
             // Set help set if not already set
             setHelpSet(Lookup.getDefault().lookup(HelpSetProvider.class).getMasterHelpSet());
         }
@@ -300,7 +301,9 @@ public final class HelpTopComponent extends TopComponent {
                 throw new IllegalArgumentException("Map id url must not be null");
             }
             try {
-                contentEditorPane.setPage(mapId.getUrl());
+                if (mapIdLookupHolder.changeValue(mapId)) {
+                    contentEditorPane.setPage(mapId.getUrl());
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

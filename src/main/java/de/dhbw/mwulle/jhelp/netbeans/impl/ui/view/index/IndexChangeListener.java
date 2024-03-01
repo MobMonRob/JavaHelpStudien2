@@ -8,8 +8,18 @@ import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 
 public class IndexChangeListener implements LookupListener {
+
+    private final IndexViewComponent indexViewComponent;
+
+    public IndexChangeListener(IndexViewComponent indexViewComponent) {
+        this.indexViewComponent = indexViewComponent;
+    }
+
     @Override
     public void resultChanged(LookupEvent ev) {
+        if (indexViewComponent.getViewState() != ViewState.READY) {
+            return;
+        }
         IndexItemNode indexItemNode = Utilities.actionsGlobalContext().lookup(IndexItemNode.class);
         ContentManager contentManager = Utilities.actionsGlobalContext().lookup(ContentManager.class);
         HelpSet helpSet = Utilities.actionsGlobalContext().lookup(HelpSet.class);
@@ -36,6 +46,8 @@ public class IndexChangeListener implements LookupListener {
             return;
         }
 
+        indexViewComponent.setViewState(ViewState.SELECTING_NODE);
         contentManager.setContent(mapId);
+        indexViewComponent.setViewState(ViewState.READY);
     }
 }

@@ -1,8 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
-import de.dhbw.mwulle.jhelp.impl.view.index.IndexItem;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -47,5 +46,24 @@ public class TocView implements View {
 
     public List<TocItem> getTocItems() {
         return tocItems;
+    }
+
+
+    public TocItem findTocItem(MapId mapId) {
+        return findTocItem(getTocItems(), mapId.getTarget());
+    }
+
+    private TocItem findTocItem(List<TocItem> tocItems, String target) {
+        for (TocItem tocItem : tocItems) {
+            if (target.equals(tocItem.getTarget())) {
+                return tocItem;
+            }
+            TocItem other = findTocItem(tocItem.getChildren(), target);
+            if (other != null) {
+                return other;
+            }
+        }
+
+        return null;
     }
 }

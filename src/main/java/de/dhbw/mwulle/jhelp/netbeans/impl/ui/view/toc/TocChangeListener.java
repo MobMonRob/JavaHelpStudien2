@@ -8,8 +8,18 @@ import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 
 public class TocChangeListener implements LookupListener {
+
+    private final TocViewComponent tocViewComponent;
+
+    public TocChangeListener(TocViewComponent tocViewComponent) {
+        this.tocViewComponent = tocViewComponent;
+    }
+
     @Override
     public void resultChanged(LookupEvent ev) {
+        if (tocViewComponent.getViewState() != ViewState.READY) {
+            return;
+        }
         TocItemNode tocItemNode = Utilities.actionsGlobalContext().lookup(TocItemNode.class);
         ContentManager contentManager = Utilities.actionsGlobalContext().lookup(ContentManager.class);
         HelpSet helpSet = Utilities.actionsGlobalContext().lookup(HelpSet.class);
@@ -36,6 +46,8 @@ public class TocChangeListener implements LookupListener {
             return;
         }
 
+        tocViewComponent.setViewState(ViewState.SELECTING_NODE);
         contentManager.setContent(mapId);
+        tocViewComponent.setViewState(ViewState.READY);
     }
 }
