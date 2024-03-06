@@ -17,6 +17,7 @@ import de.dhbw.mwulle.jhelp.impl.parser.view.LabelViewParser;
 import de.dhbw.mwulle.jhelp.impl.parser.view.NameViewParser;
 import de.dhbw.mwulle.jhelp.impl.view.index.IndexItemParser;
 import de.dhbw.mwulle.jhelp.impl.view.index.IndexViewFactory;
+import de.dhbw.mwulle.jhelp.impl.view.toc.BaseTocItemInfoParser;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItemParser;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocViewFactory;
 import org.w3c.dom.Document;
@@ -65,7 +66,7 @@ public class ParserManagerImpl implements ParserManager {
         viewHelpSetParser.registerChildParser("image", new ImageViewParser());
 
         viewHelpSetParser.registerViewFactory("javax.help.IndexView", new IndexViewFactory(new IndexItemParser(), parserManager::getDocument));
-        viewHelpSetParser.registerViewFactory("javax.help.TOCView", new TocViewFactory(new TocItemParser(), parserManager::getDocument));
+        viewHelpSetParser.registerViewFactory("javax.help.TOCView", new TocViewFactory(new TocItemParser(), new BaseTocItemInfoParser(), parserManager::getDocument));
 
         rootHelpSetParser.registerChildParser("view", viewHelpSetParser);
 

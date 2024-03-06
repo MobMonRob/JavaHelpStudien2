@@ -15,10 +15,12 @@ import java.util.function.Function;
 public class TocViewFactory implements ViewFactory {
 
     private final TocItemParser parser;
+    private final BaseTocItemInfoParser baseTocItemInfoParser;
     private final Function<URL, Document> documentFunction;
 
-    public TocViewFactory(TocItemParser parser, Function<URL, Document> documentFunction) {
+    public TocViewFactory(TocItemParser parser, BaseTocItemInfoParser baseTocItemInfoParser, Function<URL, Document> documentFunction) {
         this.parser = parser;
+        this.baseTocItemInfoParser = baseTocItemInfoParser;
         this.documentFunction = documentFunction;
     }
 
@@ -29,6 +31,6 @@ public class TocViewFactory implements ViewFactory {
         // TODO 2024-02-21: Handle language attribute from root index element
         Element root = ParserUtil.getElementByTagName("toc", document);
 
-        return new TocView(viewBuilder.getName(), viewBuilder.getLabel(), viewBuilder.getType(), viewBuilder.getMergeType(), viewBuilder.getLanguage(), parser.parse(root));
+        return new TocView(viewBuilder.getName(), viewBuilder.getLabel(), viewBuilder.getType(), viewBuilder.getMergeType(), viewBuilder.getLanguage(), parser.parse(root), baseTocItemInfoParser.parse(root));
     }
 }

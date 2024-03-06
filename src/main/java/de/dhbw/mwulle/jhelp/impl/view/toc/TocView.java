@@ -6,7 +6,14 @@ import java.util.Locale;
 
 public class TocView extends ItemView<TocItem> {
 
-    public TocView(String name, String label, String type, String mergeType, Locale language, List<TocItem> items) {
+    private final BaseTocItemInfo baseTocItemInfo;
+
+    public TocView(String name, String label, String type, String mergeType, Locale language, List<TocItem> items, BaseTocItemInfo baseTocItemInfo) {
         super(name, label, type, mergeType, language, items);
+        this.baseTocItemInfo = baseTocItemInfo;
+    }
+
+    public BaseTocItemInfo getBaseTocItemInfo() {
+        return baseTocItemInfo;
     }
 }
