@@ -8,7 +8,6 @@ import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
-import de.dhbw.mwulle.jhelp.helpset.toc.TOCItemNode;
 import de.dhbw.mwulle.jhelp.netbeans.ChangeAbleLookupHolder;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
@@ -58,11 +57,10 @@ public final class HelpTopComponent extends TopComponent {
     private final ContentManager contentManager = new ContentManagerImpl();
 
     private final ChangeAbleLookupHolder<MapId> mapIdLookupHolder = new ChangeAbleLookupHolder<>();
-
-    private Lookup tabbedPaneLookup = Lookup.EMPTY;
-    private final Lookup proxyTabbedPaneLookup = Lookups.proxy(() -> tabbedPaneLookup);
     // Currently open help set
     private final ChangeAbleLookupHolder<HelpSet> helpSetLookupHolder = new ChangeAbleLookupHolder<>();
+    private Lookup tabbedPaneLookup = Lookup.EMPTY;
+    private final Lookup proxyTabbedPaneLookup = Lookups.proxy(() -> tabbedPaneLookup);
 
     public HelpTopComponent() {
         initComponents();
@@ -121,19 +119,6 @@ public final class HelpTopComponent extends TopComponent {
                 "\n" +
                 "</body>\n" +
                 "</html> ");
-    }
-
-    public void setContent(String text) {
-        // contentEditorPane.setText(text);
-    }
-
-    public void setContentHeader(String text) {
-        // contentHeader.setText(text);
-    }
-
-    public void setRootContext(TOCItemNode rootContext) {
-        // TocItemNode otherRoot = Lookup.getDefault().lookup(de.dhbw.mwulle.jhelp.api.HelpSet.class).getViews().stream().filter(d -> d instanceof TocView).map(d -> (TocView) d).map(TocItemNode::createRootNode).findFirst().get();
-        // ((BeanTreeView) tocPane).setRootVisible(false);
     }
 
     /**

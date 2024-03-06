@@ -4,12 +4,12 @@
  */
 package de.dhbw.mwulle.jhelp.ui;
 
-import de.dhbw.mwulle.jhelp.JHelp;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.HelpCtx;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 
 import javax.swing.FocusManager;
@@ -43,7 +43,9 @@ public final class Shortcut implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JHelp jHelp = JHelp.getInstance();
-        jHelp.display(getHelpCtx());
+        // TODO 2024-03-05: Check if we should use the default HelpCtx, if we use the menu item instead of the the F1 shortcut, since the menu item always returns the Main window help ctx
+        // TODO 2024-03-05: Note: modifier=0 -> F1, modifier=16 -> menu item
+        HelpCtx.Displayer displayer = Lookup.getDefault().lookup(HelpCtx.Displayer.class);
+        displayer.display(getHelpCtx());
     }
 }
