@@ -9,7 +9,7 @@ import de.dhbw.mwulle.jhelp.impl.parser.helpset.RootHelpSetParser;
 import de.dhbw.mwulle.jhelp.impl.parser.helpset.TitleHelpSetParser;
 import de.dhbw.mwulle.jhelp.impl.parser.helpset.ViewHelpSetParser;
 import de.dhbw.mwulle.jhelp.impl.parser.maps.HomeIdMapsParser;
-import de.dhbw.mwulle.jhelp.impl.parser.maps.MapIdMapsParser;
+import de.dhbw.mwulle.jhelp.impl.parser.maps.MapIdEntryMapsParser;
 import de.dhbw.mwulle.jhelp.impl.parser.maps.MapRefMapsParser;
 import de.dhbw.mwulle.jhelp.impl.parser.maps.RootMapsParser;
 import de.dhbw.mwulle.jhelp.impl.parser.view.ImageViewParser;
@@ -50,7 +50,7 @@ public class ParserManagerImpl implements ParserManager {
 
         // Maps file parser
         RootMapsParser rootMapsParser = new RootMapsParser();
-        rootMapsParser.registerChildParser("mapID", new MapIdMapsParser());
+        rootMapsParser.registerChildParser("mapID", new MapIdEntryMapsParser());
 
         // HelpSet Maps tag parser
         MapsHelpSetParser mapsHelpSetParser = new MapsHelpSetParser();

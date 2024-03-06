@@ -6,7 +6,7 @@ package de.dhbw.mwulle.jhelp;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.ui.HelpTopComponent;
 import org.openide.modules.OnStart;
@@ -44,11 +44,11 @@ public class JHelp implements HelpCtx.Displayer {
             return false;
         }
 
-        MapId mapId = null;
+        MapIdEntry mapIdEntry = null;
         if (helpCtx != HelpCtx.DEFAULT_HELP) {
             String helpID = helpCtx.getHelpID();
             if (helpID != null) {
-                mapId = helpSet.findMapId(helpID);
+                mapIdEntry = helpSet.findMapIdEntry(helpID);
             } else {
                 URL url = helpCtx.getHelp();
                 if (url != null) {
@@ -56,9 +56,9 @@ public class JHelp implements HelpCtx.Displayer {
                 }
             }
 
-            if (mapId == null) {
+            if (mapIdEntry == null) {
                 // TODO 2024-03-05: Maybe log this?
-                System.out.println("[JHelp] MapId not found " + helpID + " context: " + helpCtx);
+                System.out.println("[JHelp] MapIdEntry not found " + helpID + " context: " + helpCtx);
                 return false;
             }
         }
@@ -67,10 +67,10 @@ public class JHelp implements HelpCtx.Displayer {
         component.open();
         component.setHelpSet(helpSet);
 
-        if (mapId != null) {
+        if (mapIdEntry != null) {
             // Only set if map id is not null, this happens, when HelpCtx is the default help,
             // in which case we want to open the last open page instead of using the home page
-            component.getLookup().lookup(ContentManager.class).setContent(mapId);
+            component.getLookup().lookup(ContentManager.class).setContent(mapIdEntry);
         }
 
         return true;

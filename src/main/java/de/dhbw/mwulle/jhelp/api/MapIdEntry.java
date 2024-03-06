@@ -5,14 +5,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class MapId {
+public class MapIdEntry {
 
     private final String target;
     private final URL url;
     private final Locale language;
-    private final List<MapId> children;
+    private final List<MapIdEntry> children;
 
-    public MapId(String target, URL url, Locale language, List<MapId> children) {
+    public MapIdEntry(String target, URL url, Locale language, List<MapIdEntry> children) {
         this.target = target;
         this.url = url;
         this.language = language;
@@ -31,7 +31,7 @@ public class MapId {
         return language;
     }
 
-    public List<MapId> getChildren() {
+    public List<MapIdEntry> getChildren() {
         return children;
     }
 }

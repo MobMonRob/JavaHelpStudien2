@@ -1,7 +1,7 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import org.openide.nodes.AbstractNode;
@@ -107,18 +107,18 @@ public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
             return null;
         }
 
-        MapId mapId = helpSet.findMapId(icon);
+        MapIdEntry mapIdEntry = helpSet.findMapIdEntry(icon);
 
-        if (mapId == null) {
+        if (mapIdEntry == null) {
             return null;
         }
 
-        if (mapId.getUrl() == null) {
+        if (mapIdEntry.getUrl() == null) {
             return null;
         }
 
         try {
-            return IconUtil.convertImage(type, ImageIO.read(mapId.getUrl()));
+            return IconUtil.convertImage(type, ImageIO.read(mapIdEntry.getUrl()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

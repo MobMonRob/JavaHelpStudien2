@@ -1,7 +1,7 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import org.openide.util.LookupEvent;
@@ -41,15 +41,15 @@ public class ItemNodeChangeListener<T extends Item<T>> implements LookupListener
             return;
         }
 
-        MapId mapId = helpSet.findMapId(itemNode.getItem().getTarget());
+        MapIdEntry mapIdEntry = helpSet.findMapIdEntry(itemNode.getItem().getTarget());
 
-        if (mapId == null || mapId.getUrl() == null) {
+        if (mapIdEntry == null || mapIdEntry.getUrl() == null) {
             // TODO 2024-02-23: Maybe log this?
             return;
         }
 
         itemViewComponent.setViewState(ViewState.SELECTING_NODE);
-        contentManager.setContent(mapId);
+        contentManager.setContent(mapIdEntry);
         itemViewComponent.setViewState(ViewState.READY);
     }
 }

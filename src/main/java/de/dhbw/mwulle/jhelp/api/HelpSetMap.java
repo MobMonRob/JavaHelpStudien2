@@ -8,12 +8,12 @@ public class HelpSetMap {
 
     private final String homeId;
     private final Locale language;
-    private final List<MapId> mapIds;
+    private final List<MapIdEntry> mapIdEntries;
 
-    public HelpSetMap(String homeId, Locale language, List<MapId> mapIds) {
+    public HelpSetMap(String homeId, Locale language, List<MapIdEntry> mapIdEntries) {
         this.homeId = homeId;
         this.language = language;
-        this.mapIds = Collections.unmodifiableList(mapIds);
+        this.mapIdEntries = Collections.unmodifiableList(mapIdEntries);
     }
 
     public String getHomeId() {
@@ -24,7 +24,7 @@ public class HelpSetMap {
         return language;
     }
 
-    public List<MapId> getMapIds() {
-        return mapIds;
+    public List<MapIdEntry> getMapIdEntries() {
+        return mapIdEntries;
     }
 }

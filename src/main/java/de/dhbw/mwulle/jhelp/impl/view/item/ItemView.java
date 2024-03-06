@@ -1,6 +1,6 @@
 package de.dhbw.mwulle.jhelp.impl.view.item;
 
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.api.View;
 
 import java.util.List;
@@ -52,8 +52,8 @@ public abstract class ItemView<T extends Item<T>> implements View {
         return items;
     }
 
-    public T findItem(MapId mapId) {
-        return findItem(getItems(), mapId.getTarget());
+    public T findItem(MapIdEntry mapIdEntry) {
+        return findItem(getItems(), mapIdEntry.getTarget());
     }
 
     private T findItem(List<T> items, String target) {

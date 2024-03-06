@@ -1,15 +1,15 @@
 package de.dhbw.mwulle.jhelp.impl.builder;
 
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapIdBuilder {
+public class MapIdEntryBuilder {
 
-    private final List<MapId> mapIds = new ArrayList<>();
+    private final List<MapIdEntry> mapIdEntries = new ArrayList<>();
     private String target;
     private URL url;
     private Locale language;
@@ -38,11 +38,11 @@ public class MapIdBuilder {
         this.language = language;
     }
 
-    public void addMapId(MapId mapId) {
-        mapIds.add(mapId);
+    public void addMapId(MapIdEntry mapIdEntry) {
+        mapIdEntries.add(mapIdEntry);
     }
 
-    public MapId build() {
-        return new MapId(target, url, language, mapIds);
+    public MapIdEntry build() {
+        return new MapIdEntry(target, url, language, mapIdEntries);
     }
 }

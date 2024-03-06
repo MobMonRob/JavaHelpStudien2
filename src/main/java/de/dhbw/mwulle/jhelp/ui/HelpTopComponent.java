@@ -6,7 +6,7 @@ package de.dhbw.mwulle.jhelp.ui;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.netbeans.ChangeAbleLookupHolder;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
@@ -56,7 +56,7 @@ public final class HelpTopComponent extends TopComponent {
 
     private final ContentManager contentManager = new ContentManagerImpl();
 
-    private final ChangeAbleLookupHolder<MapId> mapIdLookupHolder = new ChangeAbleLookupHolder<>();
+    private final ChangeAbleLookupHolder<MapIdEntry> mapIdEntryLookupHolder = new ChangeAbleLookupHolder<>();
     // Currently open help set
     private final ChangeAbleLookupHolder<HelpSet> helpSetLookupHolder = new ChangeAbleLookupHolder<>();
     private Lookup tabbedPaneLookup = Lookup.EMPTY;
@@ -85,7 +85,7 @@ public final class HelpTopComponent extends TopComponent {
         lookups.add(Lookups.singleton(new ContentManagerImpl()));
         lookups.add(helpSetLookupHolder.getLookup());
         lookups.add(proxyTabbedPaneLookup);
-        lookups.add(mapIdLookupHolder.getLookup());
+        lookups.add(mapIdEntryLookupHolder.getLookup());
         associateLookup(new ProxyLookup(lookups.toArray(new Lookup[0])));
     }
 
@@ -95,9 +95,9 @@ public final class HelpTopComponent extends TopComponent {
         }
 
         if (helpSet != null) {
-            MapId mapId = helpSet.findMapId(helpSet.getHelpSetMap().getHomeId());
-            if (mapId != null && mapId.getUrl() != null) {
-                contentManager.setContent(mapId);
+            MapIdEntry mapIdEntry = helpSet.findMapIdEntry(helpSet.getHelpSetMap().getHomeId());
+            if (mapIdEntry != null && mapIdEntry.getUrl() != null) {
+                contentManager.setContent(mapIdEntry);
             } else {
                 setEmptyPage();
             }
@@ -281,13 +281,13 @@ public final class HelpTopComponent extends TopComponent {
     private class ContentManagerImpl implements ContentManager {
 
         @Override
-        public void setContent(MapId mapId) {
-            if (mapId.getUrl() == null) {
+        public void setContent(MapIdEntry mapIdEntry) {
+            if (mapIdEntry.getUrl() == null) {
                 throw new IllegalArgumentException("Map id url must not be null");
             }
             try {
-                if (mapIdLookupHolder.changeValue(mapId)) {
-                    contentEditorPane.setPage(mapId.getUrl());
+                if (mapIdEntryLookupHolder.changeValue(mapIdEntry)) {
+                    contentEditorPane.setPage(mapIdEntry.getUrl());
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

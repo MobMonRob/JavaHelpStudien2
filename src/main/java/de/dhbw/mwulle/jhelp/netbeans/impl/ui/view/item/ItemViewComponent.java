@@ -1,6 +1,6 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import de.dhbw.mwulle.jhelp.impl.view.item.ItemView;
 import org.openide.explorer.ExplorerManager;
@@ -34,7 +34,7 @@ public class ItemViewComponent<T extends Item<T>> extends JPanel implements Look
         explorerManager.setRootContext(root);
 
         parentProvider.getLookup().lookupResult(itemNodeClass).addLookupListener(new ItemNodeChangeListener<>(this));
-        parentProvider.getLookup().lookupResult(MapId.class).addLookupListener(new MapIdChangeListener<>(this));
+        parentProvider.getLookup().lookupResult(MapIdEntry.class).addLookupListener(new MapIdChangeListener<>(this));
 
         add(beanTreeView);
     }

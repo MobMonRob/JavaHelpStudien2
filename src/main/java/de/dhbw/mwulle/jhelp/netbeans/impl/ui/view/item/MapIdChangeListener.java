@@ -1,6 +1,6 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
-import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import org.openide.nodes.Node;
 import org.openide.util.LookupEvent;
@@ -23,14 +23,14 @@ public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
             return;
         }
 
-        MapId mapId = Utilities.actionsGlobalContext().lookup(MapId.class);
+        MapIdEntry mapIdEntry = Utilities.actionsGlobalContext().lookup(MapIdEntry.class);
 
-        if (mapId == null) {
+        if (mapIdEntry == null) {
             // TODO 2024-02-22: Maybe log this?
             return;
         }
 
-        T item = itemViewComponent.getView().findItem(mapId);
+        T item = itemViewComponent.getView().findItem(mapIdEntry);
 
         if (item == null) {
             // TODO 2024-02-23: Maybe log this?
