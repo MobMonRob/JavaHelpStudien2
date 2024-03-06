@@ -4,15 +4,17 @@ import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
+import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 public class ItemNodeChangeListener<T extends Item<T>> implements LookupListener {
 
+    private final Lookup.Provider provider;
     private final ItemViewComponent<T> itemViewComponent;
 
-    public ItemNodeChangeListener(ItemViewComponent<T> itemViewComponent) {
+    public ItemNodeChangeListener(Lookup.Provider provider, ItemViewComponent<T> itemViewComponent) {
+        this.provider = provider;
         this.itemViewComponent = itemViewComponent;
     }
 
@@ -22,9 +24,9 @@ public class ItemNodeChangeListener<T extends Item<T>> implements LookupListener
             return;
         }
 
-        ItemNode<T> itemNode = Utilities.actionsGlobalContext().lookup(itemViewComponent.getItemNodeClass());
-        ContentManager contentManager = Utilities.actionsGlobalContext().lookup(ContentManager.class);
-        HelpSet helpSet = Utilities.actionsGlobalContext().lookup(HelpSet.class);
+        ItemNode<T> itemNode = provider.getLookup().lookup(itemViewComponent.getItemNodeClass());
+        ContentManager contentManager = provider.getLookup().lookup(ContentManager.class);
+        HelpSet helpSet = provider.getLookup().lookup(HelpSet.class);
 
         if (itemNode == null || contentManager == null || helpSet == null) {
             // TODO 2024-02-22: Maybe log this?

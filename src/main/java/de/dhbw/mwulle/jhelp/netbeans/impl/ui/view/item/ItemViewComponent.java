@@ -7,6 +7,7 @@ import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
+import org.openide.util.Utilities;
 
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
@@ -33,8 +34,8 @@ public class ItemViewComponent<T extends Item<T>> extends JPanel implements Look
 
         explorerManager.setRootContext(root);
 
-        parentProvider.getLookup().lookupResult(itemNodeClass).addLookupListener(new ItemNodeChangeListener<>(this));
-        parentProvider.getLookup().lookupResult(MapIdEntry.class).addLookupListener(new MapIdChangeListener<>(this));
+        parentProvider.getLookup().lookupResult(itemNodeClass).addLookupListener(new ItemNodeChangeListener<>(parentProvider, this));
+        parentProvider.getLookup().lookupResult(MapIdEntry.class).addLookupListener(new MapIdChangeListener<>(parentProvider, this));
 
         add(beanTreeView);
     }

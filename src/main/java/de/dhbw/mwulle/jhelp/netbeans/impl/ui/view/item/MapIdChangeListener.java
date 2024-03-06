@@ -3,17 +3,19 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import org.openide.nodes.Node;
+import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 import java.beans.PropertyVetoException;
 
 public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
 
+    private final Lookup.Provider provider;
     private final ItemViewComponent<T> itemViewComponent;
 
-    public MapIdChangeListener(ItemViewComponent<T> itemViewComponent) {
+    public MapIdChangeListener(Lookup.Provider provider, ItemViewComponent<T> itemViewComponent) {
+        this.provider = provider;
         this.itemViewComponent = itemViewComponent;
     }
 
@@ -23,7 +25,7 @@ public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
             return;
         }
 
-        MapIdEntry mapIdEntry = Utilities.actionsGlobalContext().lookup(MapIdEntry.class);
+        MapIdEntry mapIdEntry = provider.getLookup().lookup(MapIdEntry.class);
 
         if (mapIdEntry == null) {
             // TODO 2024-02-22: Maybe log this?
