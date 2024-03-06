@@ -1,7 +1,6 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
-import de.dhbw.mwulle.jhelp.impl.view.index.IndexItem;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view;
 
 import de.dhbw.mwulle.jhelp.api.View;
+import org.openide.util.Lookup;
 
 import java.awt.*;
-import org.openide.util.Lookup;
 
 public interface UiViewFactory {
 

@@ -2,6 +2,7 @@ package de.dhbw.mwulle.jhelp.impl.view.item;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
+
 import java.util.List;
 import java.util.Locale;
 

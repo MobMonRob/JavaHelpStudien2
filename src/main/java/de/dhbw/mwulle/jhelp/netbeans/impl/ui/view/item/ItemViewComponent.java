@@ -3,14 +3,14 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import de.dhbw.mwulle.jhelp.impl.view.item.ItemView;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexItemNode;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.tree.TreeSelectionModel;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
+
+import javax.swing.*;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
 
 public class ItemViewComponent<T extends Item<T>> extends JPanel implements Lookup.Provider, ExplorerManager.Provider {
 

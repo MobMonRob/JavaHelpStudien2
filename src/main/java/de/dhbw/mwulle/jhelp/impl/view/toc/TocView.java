@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
 import de.dhbw.mwulle.jhelp.impl.view.item.ItemView;
+
 import java.util.List;
 import java.util.Locale;
 

@@ -5,10 +5,9 @@ import org.openide.util.lookup.Lookups;
 
 public class ChangeAbleLookupHolder<T> implements Lookup.Provider {
 
+    private final Lookup proxyLookUp;
     private T value = null;
     private Lookup lookup = Lookup.EMPTY;
-
-    private final Lookup proxyLookUp;
 
     public ChangeAbleLookupHolder() {
         this.proxyLookUp = Lookups.proxy(() -> lookup);

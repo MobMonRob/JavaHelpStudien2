@@ -2,12 +2,12 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
-import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.index.IndexItemNode;
-import java.beans.PropertyVetoException;
 import org.openide.nodes.Node;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
+
+import java.beans.PropertyVetoException;
 
 public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
 

@@ -4,8 +4,6 @@ import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.impl.builder.ViewBuilder;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
 import de.dhbw.mwulle.jhelp.impl.view.ViewFactory;
-import de.dhbw.mwulle.jhelp.impl.view.index.IndexItemParser;
-import de.dhbw.mwulle.jhelp.impl.view.index.IndexView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
