@@ -1,15 +1,17 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
+
 import java.util.Locale;
 
 public class BaseTocItemInfo {
 
     private final Locale language;
-    private final String categoryClosedImage;
-    private final String categoryOpenImage;
-    private final String topicImage;
+    private final MapId categoryClosedImage;
+    private final MapId categoryOpenImage;
+    private final MapId topicImage;
 
-    public BaseTocItemInfo(Locale language, String categoryClosedImage, String categoryOpenImage, String topicImage) {
+    public BaseTocItemInfo(Locale language, MapId categoryClosedImage, MapId categoryOpenImage, MapId topicImage) {
         this.language = language;
         this.categoryClosedImage = categoryClosedImage;
         this.categoryOpenImage = categoryOpenImage;
@@ -20,15 +22,15 @@ public class BaseTocItemInfo {
         return language;
     }
 
-    public String getCategoryClosedImage() {
+    public MapId getCategoryClosedImage() {
         return categoryClosedImage;
     }
 
-    public String getCategoryOpenImage() {
+    public MapId getCategoryOpenImage() {
         return categoryOpenImage;
     }
 
-    public String getTopicImage() {
+    public MapId getTopicImage() {
         return topicImage;
     }
 }

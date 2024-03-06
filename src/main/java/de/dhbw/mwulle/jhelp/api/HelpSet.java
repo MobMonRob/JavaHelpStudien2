@@ -27,20 +27,20 @@ public class HelpSet {
         return views;
     }
 
-    public MapIdEntry findMapIdEntry(String target) {
+    public MapIdEntry findMapIdEntry(MapId id) {
         if (helpSetMap == null) {
             return null;
         }
 
-        return findMapIdEntry(helpSetMap.getMapIdEntries(), target);
+        return findMapIdEntry(helpSetMap.getMapIdEntries(), id);
     }
 
-    private MapIdEntry findMapIdEntry(List<MapIdEntry> mapIdEntries, String target) {
+    private MapIdEntry findMapIdEntry(List<MapIdEntry> mapIdEntries, MapId id) {
         for (MapIdEntry mapIdEntry : mapIdEntries) {
-            if (target.equals(mapIdEntry.getTarget())) {
+            if (id.equals(mapIdEntry.getId())) {
                 return mapIdEntry;
             }
-            MapIdEntry other = findMapIdEntry(mapIdEntry.getChildren(), target);
+            MapIdEntry other = findMapIdEntry(mapIdEntry.getChildren(), id);
             if (other != null) {
                 return other;
             }

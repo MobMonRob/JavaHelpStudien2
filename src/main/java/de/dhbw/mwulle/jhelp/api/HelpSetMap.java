@@ -6,17 +6,17 @@ import java.util.Locale;
 
 public class HelpSetMap {
 
-    private final String homeId;
+    private final MapId homeId;
     private final Locale language;
     private final List<MapIdEntry> mapIdEntries;
 
-    public HelpSetMap(String homeId, Locale language, List<MapIdEntry> mapIdEntries) {
+    public HelpSetMap(MapId homeId, Locale language, List<MapIdEntry> mapIdEntries) {
         this.homeId = homeId;
         this.language = language;
         this.mapIdEntries = Collections.unmodifiableList(mapIdEntries);
     }
 
-    public String getHomeId() {
+    public MapId getHomeId() {
         return homeId;
     }
 

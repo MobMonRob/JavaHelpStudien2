@@ -1,5 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.view.item;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -7,14 +9,14 @@ public abstract class Item<T extends Item<T>> {
 
     private final Locale language;
     private final String text;
-    private final String target;
+    private final MapId target;
     private final String mergeType;
     private final String expand;
     private final String presentationType;
     private final String presentationName;
     private final List<T> children;
 
-    protected Item(Locale language, String text, String target, String mergeType, String expand, String presentationType, String presentationName, List<T> children) {
+    protected Item(Locale language, String text, MapId target, String mergeType, String expand, String presentationType, String presentationName, List<T> children) {
         this.language = language;
         this.text = text;
         this.target = target;
@@ -33,7 +35,7 @@ public abstract class Item<T extends Item<T>> {
         return text;
     }
 
-    public String getTarget() {
+    public MapId getTarget() {
         return target;
     }
 

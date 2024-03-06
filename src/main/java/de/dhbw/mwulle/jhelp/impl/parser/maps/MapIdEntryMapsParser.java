@@ -1,5 +1,6 @@
 package de.dhbw.mwulle.jhelp.impl.parser.maps;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.impl.builder.MapIdEntryBuilder;
 import de.dhbw.mwulle.jhelp.impl.builder.MapsBuilder;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
@@ -18,7 +19,7 @@ public class MapIdEntryMapsParser implements MapsParser {
     }
 
     private void parse(MapIdEntryBuilder builder, Element element, URL directory) {
-        String target = element.getAttribute("target");
+        MapId id = MapId.fromString(element.getAttribute("target"));
         String url = element.getAttribute("url");
         String language = element.getAttribute("xml:lang");
 
@@ -26,7 +27,7 @@ public class MapIdEntryMapsParser implements MapsParser {
             builder.setLanguage(Locale.forLanguageTag(language));
         }
 
-        builder.setTarget(target);
+        builder.setId(id);
         builder.setUrl(ParserUtil.resolve(directory, url));
 
         ParserUtil.foreachChildrenElement(element, child -> {

@@ -1,5 +1,6 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
 import org.w3c.dom.Element;
 
@@ -21,8 +22,8 @@ public class TocItemParser {
     private TocItem parseSingle(Element element) {
         String languageText = element.getAttribute("xml:lang");
         String text = element.getAttribute("text");
-        String target = element.getAttribute("target"); // Optional
-        String image = element.getAttribute("image"); // Optional
+        MapId target = MapId.fromString(element.getAttribute("target")); // Optional
+        MapId image = MapId.fromString(element.getAttribute("image")); // Optional
         String mergeType = element.getAttribute("mergetype"); // Optional
         String expandText = element.getAttribute("expand"); // Optional
         String presentationType = element.getAttribute("presentationtype"); // Optional

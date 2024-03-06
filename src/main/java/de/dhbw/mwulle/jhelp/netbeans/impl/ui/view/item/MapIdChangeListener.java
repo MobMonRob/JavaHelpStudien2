@@ -30,7 +30,7 @@ public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
             return;
         }
 
-        T item = itemViewComponent.getView().findItem(mapIdEntry);
+        T item = itemViewComponent.getView().findItem(mapIdEntry.getId());
 
         if (item == null) {
             // TODO 2024-02-23: Maybe log this?

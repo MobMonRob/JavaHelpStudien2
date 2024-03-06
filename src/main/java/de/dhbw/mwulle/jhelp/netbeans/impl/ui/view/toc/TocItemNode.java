@@ -1,5 +1,6 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.toc;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItem;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
@@ -35,7 +36,7 @@ public class TocItemNode extends ItemNode<TocItem> {
     }
 
     @Override
-    protected String getDefaultClosedIcon() {
+    protected MapId getDefaultClosedIcon() {
         if (getView().getBaseTocItemInfo() == null) {
             return null;
         }
@@ -43,7 +44,7 @@ public class TocItemNode extends ItemNode<TocItem> {
     }
 
     @Override
-    protected String getDefaultOpenIcon() {
+    protected MapId getDefaultOpenIcon() {
         if (getView().getBaseTocItemInfo() == null) {
             return null;
         }
@@ -51,7 +52,7 @@ public class TocItemNode extends ItemNode<TocItem> {
     }
 
     @Override
-    protected String getDefaultLeafIcon() {
+    protected MapId getDefaultLeafIcon() {
         if (getView().getBaseTocItemInfo() == null) {
             return null;
         }
@@ -59,7 +60,7 @@ public class TocItemNode extends ItemNode<TocItem> {
     }
 
     @Override
-    protected String getIcon() {
+    protected MapId getIcon() {
         return getItem().getImage();
     }
 

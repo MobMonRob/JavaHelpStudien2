@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
@@ -44,19 +45,19 @@ public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
         return view;
     }
 
-    protected String getDefaultOpenIcon() {
+    protected MapId getDefaultOpenIcon() {
         return null;
     }
 
-    protected String getDefaultClosedIcon() {
+    protected MapId getDefaultClosedIcon() {
         return null;
     }
 
-    protected String getDefaultLeafIcon() {
+    protected MapId getDefaultLeafIcon() {
         return null;
     }
 
-    protected String getIcon() {
+    protected MapId getIcon() {
         return null;
     }
 
@@ -70,7 +71,7 @@ public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
         return getIcon(type, getDefaultOpenIcon(), super::getOpenedIcon);
     }
 
-    private Image getIcon(int type, String noneLeafIcon, IntFunction<Image> fallback) {
+    private Image getIcon(int type, MapId noneLeafIcon, IntFunction<Image> fallback) {
         if (getItem() == null) {
             return fallback.apply(type);
         }
@@ -102,7 +103,7 @@ public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
         return fallback.apply(type);
     }
 
-    private Image getFromIcon(HelpSet helpSet, int type, String icon) {
+    private Image getFromIcon(HelpSet helpSet, int type, MapId icon) {
         if (icon == null) {
             return null;
         }

@@ -6,6 +6,7 @@ package de.dhbw.mwulle.jhelp;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.ui.HelpTopComponent;
@@ -46,7 +47,7 @@ public class JHelp implements HelpCtx.Displayer {
 
         MapIdEntry mapIdEntry = null;
         if (helpCtx != HelpCtx.DEFAULT_HELP) {
-            String helpID = helpCtx.getHelpID();
+            MapId helpID = MapId.fromString(helpCtx.getHelpID());
             if (helpID != null) {
                 mapIdEntry = helpSet.findMapIdEntry(helpID);
             } else {

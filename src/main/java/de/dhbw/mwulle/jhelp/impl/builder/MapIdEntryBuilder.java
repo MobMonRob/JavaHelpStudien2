@@ -1,5 +1,6 @@
 package de.dhbw.mwulle.jhelp.impl.builder;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 
 import java.net.URL;
@@ -10,16 +11,16 @@ import java.util.Locale;
 public class MapIdEntryBuilder {
 
     private final List<MapIdEntry> mapIdEntries = new ArrayList<>();
-    private String target;
+    private MapId id;
     private URL url;
     private Locale language;
 
-    public String getTarget() {
-        return target;
+    public MapId getId() {
+        return id;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public void setId(MapId id) {
+        this.id = id;
     }
 
     public URL getUrl() {
@@ -43,6 +44,6 @@ public class MapIdEntryBuilder {
     }
 
     public MapIdEntry build() {
-        return new MapIdEntry(target, url, language, mapIdEntries);
+        return new MapIdEntry(id, url, language, mapIdEntries);
     }
 }

@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.builder;
 
 import de.dhbw.mwulle.jhelp.api.HelpSetMap;
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 
 import java.net.URL;
@@ -12,7 +13,7 @@ public class MapsBuilder {
 
     private final URL directory;
     private final List<MapIdEntry> mapIdEntries = new ArrayList<>();
-    private String homeId;
+    private MapId homeId;
     private Locale language;
     private String version;
 
@@ -24,11 +25,11 @@ public class MapsBuilder {
         return new HelpSetMap(homeId, language, mapIdEntries);
     }
 
-    public String getHomeId() {
+    public MapId getHomeId() {
         return homeId;
     }
 
-    public void setHomeId(String homeId) {
+    public void setHomeId(MapId homeId) {
         this.homeId = homeId;
     }
 
