@@ -2,13 +2,13 @@
  * Copyright (c) 2023. Melvin Wulle
  * All rights reserved.
  */
-package de.dhbw.mwulle.jhelp.ui;
+package de.dhbw.mwulle.jhelp.netbeans.impl.ui;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.api.View;
-import de.dhbw.mwulle.jhelp.netbeans.ChangeAbleLookupHolder;
+import de.dhbw.mwulle.jhelp.netbeans.impl.ChangeAbleLookupHolder;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -37,7 +37,7 @@ import java.util.List;
 )
 @TopComponent.Description(
         preferredID = "HelpTopComponent",
-        iconBase = "de/dhbw/mwulle/jhelp/ui/help-16x16.png",
+        iconBase = "de/dhbw/mwulle/jhelp/netbeans/impl/ui/help-16x16.png",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)

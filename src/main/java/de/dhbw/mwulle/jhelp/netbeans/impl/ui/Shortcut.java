@@ -2,7 +2,7 @@
  * Copyright (c) 2023. Melvin Wulle
  * All rights reserved.
  */
-package de.dhbw.mwulle.jhelp.ui;
+package de.dhbw.mwulle.jhelp.netbeans.impl.ui;
 
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
         id = "com.mwulle.help.ui.Shortcut"
 )
 @ActionRegistration(
-        iconBase = "de/dhbw/mwulle/jhelp/ui/help-16x16.png",
+        iconBase = "de/dhbw/mwulle/jhelp/netbeans/impl/ui/help-16x16.png",
         displayName = "#CTL_Shortcut"
 )
 @ActionReferences({

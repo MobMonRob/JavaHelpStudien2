@@ -122,7 +122,7 @@
             <Component class="javax.swing.JLabel" name="contentHeader">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="com/mwulle/jHelp/ui/Bundle.properties" key="HelpTopComponent.contentHeader.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                  <ResourceString bundle="de/dhbw/mwulle/jhelp/netbeans/impl/ui/Bundle.properties" key="HelpTopComponent.contentHeader.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>

@@ -1,4 +1,4 @@
-package de.dhbw.mwulle.jhelp.netbeans;
+package de.dhbw.mwulle.jhelp.netbeans.impl;
 
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
