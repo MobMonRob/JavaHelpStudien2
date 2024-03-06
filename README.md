@@ -9,22 +9,37 @@ applications. If you have feedback or feature suggestions, please create a new
 ## Description
 
 JHelp is a Maven NetBeans Module that should replace JavaHelp and the JavaHelp NetBeans Module.
+
+# Limitations
 JHelp currently only supports a limited subset of features of JavaHelp and only HelpSets from the version 2.0.
+
+Features it does support:
+- Registering a HelpSet via annotation
+- Toc and Index view and selection
+- Viewing one HelpSet
+- Netbeans HelpSet context
+
+Features it does **not** support:
+- Merging multiple HelpSets
+- Fulltext search
+- Favorites
+- and more
 
 ## Installation
 
-To install JHelp in your locale maven repository run:
+To install JHelp in your locale maven repository clone and then run:
 
-```
+```shell
 mvn clean install
 ```
 
 ## Usage
 
+First, make sure you followed to installation steps in ## Installation, since JHelp is currently not in any maven repo.
 To use the JHelp NetBeans module inside your NetBeans-Platform application, add the
 maven dependency to your Project pom.xml:
 
-```
+```xml
 <dependency>
     <groupId>de.dhbw.mwulle</groupId>
     <artifactId>jhelp</artifactId>
@@ -32,27 +47,34 @@ maven dependency to your Project pom.xml:
 </dependency>
 ```
 
-In order to create a compliant HelpSet for a module, use the NetBeans IDE Wizard and delete the ``@HelpSetRegistration``
-Annotation in package-info.java.
-Also remove the added ``org-netbeans-modules-javahelp`` dependency.
-For each module that provides HelpSets you have to add a reference in the Services/JavaHelp 
-folder inside the NetBeans Filesystem.
-For that you have to manuell add this to the layer.xml of the module (currently there are issues with that):
+**Note:** JHelp uses netbeans platform version `RELEASE200`
 
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
-<filesystem>
-    <folder name="Services">
-        <folder name="JavaHelp">
-            <file name="jhelp-hs.xml" url="url-to-your-helpset">
-                <attr name="position" intvalue="1000"/>
-            </file>
-        </folder>
-    </folder>
-</filesystem>
-```
+When setting up JHelp, you can either configure it manually or use the NetBeans IDE Wizard to let it create a simple HelpSet.
+You can find a demo repository [here](https://github.com/DerFrZocker/DHBW-JHelp-Demo).
 
+### Manually
+
+1. Create a `package-info.java` in the package which should house the HelpSet.
+2. Add the `@HelpSetRegistration` annotation to the `package-info.java`
+   and add the path to the `hs` file in the annotations `helpset` field.
+    Note: The path is relative to the package the `package-info.java` is in.
+    ```java
+    @HelpSetRegistration(helpSet = "Animals.hs")
+    package de.derfrzocker.jhelp.demo.docs;
+
+    import de.dhbw.mwulle.jhelp.netbeans.api.HelpSetRegistration;
+    ```
+3. Create a directory with the same path as the package of the `package-info.java` in your resource directory.
+4. Now you can create your HelpSet in this directory with the `hs` being in the location set in the`@HelpSetRegistration` annotation.
+
+### Via NetBeans IDE Wizard
+
+1. Select the module you want to create a HelpSet in.
+2. Go to the `New File` wizard.
+3. Go to the `Module Development` tab and select `JavaHelp Help Set`.
+4. Go to the created `package-info.java` and change the import of the `@HelpSetRegistration` annotation from `org.netbeans.api.javahelp.HelpSetRegistration` to `de.dhbw.mwulle.jhelp.netbeans.api.HelpSetRegistration`.
+5. Go to the `pom.xml` and delete the added `org-netbeans-modules-javahelp` dependency.
+6. Modify the created HelpSet to your need.
 
 ## License
 
