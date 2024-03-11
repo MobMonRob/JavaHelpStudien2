@@ -1,0 +1,10 @@
+<!ELEMENT map (mapID*)>
+        <!ATTLIST map
+                version (1.0 | 2.0) #REQUIRED
+                >
+
+        <!ELEMENT mapID (mapID*)>
+        <!ATTLIST mapID
+                target CDATA #REQUIRED
+                url CDATA #REQUIRED
+                >

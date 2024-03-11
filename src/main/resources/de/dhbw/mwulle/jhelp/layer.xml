@@ -15,7 +15,10 @@
     <folder name="Services">
         <folder name="JavaHelp">
             <file name="helpsetlink.dtd" url="helpsetlink.dtd"/>
-            <attr name="hidden" boolvalue="true"/>
+            <file name="helpset.dtd" url="helpset.dtd"/>
+            <file name="index.dtd" url="index.dtd"/>
+            <file name="map.dtd" url="map.dtd"/>
+            <file name="toc.dtd" url="toc.dtd"/>
         </folder>
     </folder>
     <folder name="xml">

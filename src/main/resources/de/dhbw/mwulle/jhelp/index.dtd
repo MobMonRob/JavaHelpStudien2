@@ -1,0 +1,14 @@
+<!ELEMENT index (indexitem*)>
+        <!ATTLIST index
+                version (1.0 | 2.0) #REQUIRED
+                >
+
+        <!ELEMENT indexitem (indexitem*)>
+        <!ATTLIST indexitem
+                text CDATA #REQUIRED
+                target CDATA #IMPLIED
+                mergetype CDATA "javax.help.AppendMerge"
+                expand (true | false | none) "none"
+                presentationtype CDATA #IMPLIED
+                presentationname CDATA #IMPLIED
+                >

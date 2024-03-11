@@ -1,0 +1,71 @@
+<!ELEMENT helpset (title, maps, view*, presentation*, subhelpset*, impl?)>
+        <!ATTLIST helpset
+                version (1.0 | 2.0) #REQUIRED
+                >
+
+        <!ELEMENT title (#PCDATA)>
+
+        <!ELEMENT maps (homeID, mapref)>
+        <!ELEMENT homeID (#PCDATA)>
+        <!ELEMENT mapref EMPTY>
+        <!ATTLIST mapref
+                location CDATA #REQUIRED
+                >
+
+        <!ELEMENT name (#PCDATA)>
+
+        <!ELEMENT view (name, label, type, data, image?)>
+        <!ATTLIST view
+                mergetype CDATA #IMPLIED
+                >
+
+        <!ELEMENT label (#PCDATA)>
+        <!ELEMENT type (#PCDATA)>
+        <!ELEMENT data (#PCDATA)>
+        <!ATTLIST data
+                engine CDATA #IMPLIED
+                >
+
+        <!ELEMENT image (#PCDATA)>
+
+        <!ELEMENT presentation (name, size, location, title, image?, toolbar?)>
+        <!ATTLIST presentation
+                default (true | false) "false"
+                displayview (true | false) "true"
+                displayviewimages (true | false) "true"
+                >
+
+        <!ELEMENT size EMPTY>
+        <!ATTLIST size
+                width CDATA #REQUIRED
+                height CDATA #REQUIRED
+                >
+
+        <!ELEMENT location EMPTY>
+        <!ATTLIST location
+                x CDATA #REQUIRED
+                y CDATA #REQUIRED
+                >
+
+        <!ELEMENT toolbar (helpaction)>
+        <!ELEMENT helpaction (#PCDATA)>
+        <!ATTLIST helpaction
+                image CDATA #IMPLIED
+                >
+
+        <!ELEMENT subhelpset EMPTY>
+        <!ATTLIST subhelpset
+                location CDATA #REQUIRED
+                >
+
+        <!ELEMENT impl (helpsetregistry?, viewregistry*)>
+        <!ELEMENT helpsetregistry EMPTY>
+        <!ATTLIST helpsetregistry
+                helpbrokerclass CDATA #REQUIRED
+                >
+
+        <!ELEMENT viewregistry EMPTY>
+        <!ATTLIST viewregistry
+                viewertype CDATA #REQUIRED
+                viewerclass CDATA #REQUIRED
+                >
