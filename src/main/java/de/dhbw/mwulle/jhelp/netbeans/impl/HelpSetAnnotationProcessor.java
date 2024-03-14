@@ -37,7 +37,13 @@ public class HelpSetAnnotationProcessor extends LayerGeneratingProcessor {
             PackageElement packageElement = (PackageElement) element;
             LayerBuilder builder = layer(element);
             HelpSetRegistration annotation = element.getAnnotation(HelpSetRegistration.class);
-            builder.file(String.format("Services/JavaHelp/%s.xml", annotation.helpSet())).contents(String.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            String fileName = packageElement.getQualifiedName().toString() + "." + annotation.helpSet().replace('/', '.');
+
+            if (!fileName.endsWith(".xml")) {
+                fileName = fileName + ".xml";
+            }
+
+            builder.file(String.format("Services/JavaHelp/%s", fileName)).contents(String.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<!DOCTYPE helpsetlink PUBLIC \"-//DHBW_Karlsruhe//DTD JavaHelp Help Set link 1.0//EN\" \"helpsetlink.dtd\">\n" +
                     "<helpsetlink url=\"/%s\"/>", packageElement.getQualifiedName().toString().replace('.', '/') + '/' + annotation.helpSet())).write();
         }
