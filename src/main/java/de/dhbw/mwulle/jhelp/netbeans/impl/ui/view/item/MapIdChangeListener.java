@@ -44,6 +44,9 @@ public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
             return;
         }
 
+        itemViewComponent.setViewState(ViewState.CHANGING_NODE);
+        itemViewComponent.expandTo(item);
+
         ItemNode<T> itemNode = findNode(item);
 
         if (itemNode == null) {
@@ -52,11 +55,12 @@ public class MapIdChangeListener<T extends Item<T>> implements LookupListener {
                 itemViewComponent.getExplorerManager().setSelectedNodes(new Node[0]);
             } catch (PropertyVetoException e) {
                 throw new RuntimeException(e);
+            } finally {
+                itemViewComponent.setViewState(ViewState.READY);
             }
             return;
         }
 
-        itemViewComponent.setViewState(ViewState.CHANGING_NODE);
         try {
             itemViewComponent.getExplorerManager().setSelectedNodes(new ItemNode[]{itemNode});
         } catch (PropertyVetoException e) {

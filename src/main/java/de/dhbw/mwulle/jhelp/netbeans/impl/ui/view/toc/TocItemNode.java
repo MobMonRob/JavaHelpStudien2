@@ -5,6 +5,8 @@ import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItem;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocView;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item.ItemNode;
+import org.openide.cookies.InstanceCookie;
+import org.openide.loaders.InstanceDataObject;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.Lookup;
@@ -13,20 +15,28 @@ import java.util.List;
 
 public class TocItemNode extends ItemNode<TocItem> {
 
-    protected TocItemNode(Children children, Lookup.Provider provider, View view, TocItem item) {
-        super(children, provider, view, item);
+    private TocItemNode(Children children, TocItemNodeFactory tocItemNodeFactory, Lookup.Provider provider, View view, TocItem item) {
+        super(children, tocItemNodeFactory, provider, view, item);
     }
 
     public static TocItemNode createRootNode(Lookup.Provider provider, TocView tocView) {
-        return new TocItemNode(createChildren(provider, tocView, tocView.getItems()), provider, tocView, null);
+        TocItemNodeFactory tocItemNodeFactory = createFactory(provider, tocView, tocView.getItems());
+        return new TocItemNode(createChildren(tocItemNodeFactory), tocItemNodeFactory, provider, tocView, null);
     }
 
-    private static Children createChildren(Lookup.Provider provider, View view, List<TocItem> tocItems) {
+    private static TocItemNodeFactory createFactory(Lookup.Provider provider, View view, List<TocItem> tocItems) {
         if (tocItems.isEmpty()) {
+            return null;
+        }
+        return new TocItemNodeFactory(provider, view, tocItems);
+    }
+
+    private static Children createChildren(TocItemNodeFactory tocItemNodeFactory) {
+        if (tocItemNodeFactory == null) {
             return Children.LEAF;
         }
 
-        return Children.create(new TocItemNodeFactory(provider, view, tocItems), false);
+        return Children.create(tocItemNodeFactory, false);
     }
 
     @Override
@@ -72,7 +82,8 @@ public class TocItemNode extends ItemNode<TocItem> {
 
         @Override
         protected Node createNodeForKey(TocItem key) {
-            return new TocItemNode(createChildren(getProvider(), getView(), key.getChildren()), getProvider(), getView(), key);
+            TocItemNodeFactory tocItemNodeFactory = createFactory(getProvider(), getView(), key.getChildren());
+            return new TocItemNode(createChildren(tocItemNodeFactory), tocItemNodeFactory, getProvider(), getView(), key);
         }
     }
 }

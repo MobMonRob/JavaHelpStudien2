@@ -19,18 +19,24 @@ import java.util.function.IntFunction;
 
 public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
 
+    private final ItemNodeFactory<T> itemNodeFactory;
     private final Lookup.Provider provider;
     private final View view;
     private final T item;
 
-    protected ItemNode(Children children, Lookup.Provider provider, View view, T item) {
+    protected ItemNode(Children children, ItemNodeFactory<T> itemNodeFactory, Lookup.Provider provider, View view, T item) {
         super(children);
+        this.itemNodeFactory = itemNodeFactory;
         this.provider = provider;
         this.view = view;
         this.item = item;
         if (item != null) {
             setDisplayName(item.getText());
         }
+    }
+
+    public void refresh() {
+        itemNodeFactory.refresh();
     }
 
     public T getItem() {
@@ -134,6 +140,10 @@ public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
             this.provider = provider;
             this.view = view;
             this.children = children;
+        }
+
+        void refresh() {
+            refresh(true);
         }
 
         @Override

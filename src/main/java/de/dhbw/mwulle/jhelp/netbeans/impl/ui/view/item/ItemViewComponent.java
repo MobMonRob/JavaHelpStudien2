@@ -3,15 +3,25 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.item;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 import de.dhbw.mwulle.jhelp.impl.view.item.ItemView;
+import org.netbeans.modules.openide.loaders.DataNodeUtils;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
+import org.openide.nodes.Children;
+import org.openide.nodes.CookieSet;
+import org.openide.nodes.Node;
+import org.openide.nodes.NodeOp;
+import org.openide.nodes.NodeOperation;
 import org.openide.util.Lookup;
 import org.openide.util.Utilities;
 
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ItemViewComponent<T extends Item<T>> extends JPanel implements Lookup.Provider, ExplorerManager.Provider {
 
@@ -64,5 +74,40 @@ public class ItemViewComponent<T extends Item<T>> extends JPanel implements Look
 
     public void setViewState(ViewState viewState) {
         this.viewState = viewState;
+    }
+
+    public void expandTo(T item) {
+        LinkedList<T> path = new LinkedList<>();
+        if (findPath(path, item, getView().getItems())) {
+            System.out.println("Found path: " + path);
+        }
+
+        List<Node> currentNodes = Arrays.asList(explorerManager.getRootContext().getChildren().getNodes(true));
+        for (T pathItem : path) {
+            System.out.println("Expand nodes " + currentNodes);
+            for (Node node : currentNodes) {
+                if (((ItemNode<T>) node).getItem() == pathItem) {
+                    ((ItemNode<?>) node).refresh();
+                    System.out.println("Expand " + node);
+                    beanTreeView.expandNode(node);
+                    currentNodes = Arrays.asList(node.getChildren().getNodes(true));
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean findPath(LinkedList<T> path, T to, List<T> toCheck) {
+        for (T check : toCheck) {
+            if (check == to) {
+                return true;
+            }
+            if (findPath(path, to, check.getChildren())) {
+                path.addFirst(check);
+                return true;
+            }
+        }
+
+        return false;
     }
 }
