@@ -8,6 +8,7 @@ import org.openide.loaders.Environment;
 import org.openide.loaders.XMLDataObject;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
+import org.openide.xml.EntityCatalog;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,7 +45,7 @@ public class HelpSetLinkReader implements Environment.Provider {
                     URI uri = classLoader.getResource(url).toURI();
                     System.out.println("Reading from uri: " + uri);
 
-                    HelpSet helpSet = ParserManagerImpl.createDefault().parseHelpSet(uri);
+                    HelpSet helpSet = ParserManagerImpl.createDefault(EntityCatalog.getDefault()).parseHelpSet(uri);
 
                     // HelpSetManager.getInstance().loadHelpSet(classLoader.getResource(url));
                     return helpSet;

@@ -20,12 +20,9 @@ import de.dhbw.mwulle.jhelp.impl.view.index.IndexViewFactory;
 import de.dhbw.mwulle.jhelp.impl.view.toc.BaseTocItemInfoParser;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItemParser;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocViewFactory;
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -36,23 +33,23 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ParserManagerImpl implements ParserManager {
 
     private final HelpSetParser rootHelpSetParser;
     private final DocumentBuilderFactory factory;
-    private final CustomEntityResolver entityResolver = new CustomEntityResolver();
+    private final EntityResolver entityResolver;
 
-    public ParserManagerImpl(HelpSetParser rootHelpSetParser) throws ParserConfigurationException {
+    public ParserManagerImpl(HelpSetParser rootHelpSetParser, EntityResolver entityResolver) throws ParserConfigurationException {
         this.rootHelpSetParser = rootHelpSetParser;
+        this.entityResolver = entityResolver;
         this.factory = DocumentBuilderFactory.newInstance();
+        this.factory.setValidating(true);
     }
 
-    public static ParserManagerImpl createDefault() throws ParserConfigurationException {
+    public static ParserManagerImpl createDefault(EntityResolver entityResolver) throws ParserConfigurationException {
         RootHelpSetParser rootHelpSetParser = new RootHelpSetParser();
-        ParserManagerImpl parserManager = new ParserManagerImpl(rootHelpSetParser);
+        ParserManagerImpl parserManager = new ParserManagerImpl(rootHelpSetParser, entityResolver);
 
         rootHelpSetParser.registerChildParser("title", new TitleHelpSetParser());
 
@@ -78,16 +75,7 @@ public class ParserManagerImpl implements ParserManager {
 
         rootHelpSetParser.registerChildParser("view", viewHelpSetParser);
 
-        parserManager.registerDTD("-//Sun Microsystems Inc.//DTD JavaHelp HelpSet Version 2.0//EN", "helpset.dtd");
-        parserManager.registerDTD("-//Sun Microsystems Inc.//DTD JavaHelp Index Version 2.0//EN", "index.dtd");
-        parserManager.registerDTD("-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN", "map.dtd");
-        parserManager.registerDTD("-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 2.0//EN", "toc.dtd");
-
         return parserManager;
-    }
-
-    public void registerDTD(String publicId, String dtdFile) {
-        entityResolver.custom.put(publicId, dtdFile);
     }
 
     @Override
@@ -130,25 +118,6 @@ public class ParserManagerImpl implements ParserManager {
             return document;
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private static class CustomEntityResolver implements EntityResolver {
-
-        private final Map<String, String> custom = new HashMap<>();
-
-        @Override
-        public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-            String dtd = custom.get(publicId);
-
-            System.out.println("Got publixId " + publicId);
-
-            if (dtd == null) {
-                return null;
-            }
-
-            FileObject fileObject = FileUtil.getConfigRoot().getFileObject("Services/JavaHelp/" + dtd);
-            return new InputSource(fileObject.getInputStream());
         }
     }
 }
