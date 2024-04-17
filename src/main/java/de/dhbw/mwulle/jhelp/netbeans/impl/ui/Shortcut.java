@@ -46,6 +46,8 @@ public final class Shortcut implements ActionListener {
         // TODO 2024-03-05: Check if we should use the default HelpCtx, if we use the menu item instead of the the F1 shortcut, since the menu item always returns the Main window help ctx
         // TODO 2024-03-05: Note: modifier=0 -> F1, modifier=16 -> menu item
         HelpCtx.Displayer displayer = Lookup.getDefault().lookup(HelpCtx.Displayer.class);
-        displayer.display(getHelpCtx());
+        if (!displayer.display(getHelpCtx())) {
+            displayer.display(HelpCtx.DEFAULT_HELP);
+        }
     }
 }
