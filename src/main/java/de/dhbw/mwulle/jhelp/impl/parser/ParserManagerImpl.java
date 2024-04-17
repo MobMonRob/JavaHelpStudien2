@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.function.Function;
 
 public class ParserManagerImpl implements ParserManager {
 
@@ -52,30 +53,37 @@ public class ParserManagerImpl implements ParserManager {
         ParserManagerImpl parserManager = new ParserManagerImpl(rootHelpSetParser, entityResolver);
 
         rootHelpSetParser.registerChildParser("title", new TitleHelpSetParser());
+        rootHelpSetParser.registerChildParser("maps", createMapsHelpSetParser(parserManager::getDocument));
+        rootHelpSetParser.registerChildParser("view", createViewHelpSetParser(parserManager::getDocument));
 
-        // Maps file parser
+        return parserManager;
+    }
+
+    private static MapsHelpSetParser createMapsHelpSetParser(Function<URL, Document> documentFunction) throws ParserConfigurationException {
+        MapsHelpSetParser mapsHelpSetParser = new MapsHelpSetParser();
+        mapsHelpSetParser.registerChildParser("homeID", new HomeIdMapsParser());
+        mapsHelpSetParser.registerChildParser("mapref", new MapRefMapsParser(createRootMapsParser(), documentFunction));
+
+        return mapsHelpSetParser;
+    }
+
+    private static RootMapsParser createRootMapsParser() {
         RootMapsParser rootMapsParser = new RootMapsParser();
         rootMapsParser.registerChildParser("mapID", new MapIdEntryMapsParser());
 
-        // HelpSet Maps tag parser
-        MapsHelpSetParser mapsHelpSetParser = new MapsHelpSetParser();
-        mapsHelpSetParser.registerChildParser("homeID", new HomeIdMapsParser());
-        mapsHelpSetParser.registerChildParser("mapref", new MapRefMapsParser(rootMapsParser, parserManager::getDocument));
+        return rootMapsParser;
+    }
 
-        rootHelpSetParser.registerChildParser("maps", mapsHelpSetParser);
-
-        // HelpSet View tag parser
+    private static ViewHelpSetParser createViewHelpSetParser(Function<URL, Document> documentFunction) {
         ViewHelpSetParser viewHelpSetParser = new ViewHelpSetParser();
         viewHelpSetParser.registerChildParser("name", new NameViewParser());
         viewHelpSetParser.registerChildParser("label", new LabelViewParser());
         viewHelpSetParser.registerChildParser("image", new ImageViewParser());
 
-        viewHelpSetParser.registerViewFactory("javax.help.IndexView", new IndexViewFactory(new IndexItemParser(), parserManager::getDocument));
-        viewHelpSetParser.registerViewFactory("javax.help.TOCView", new TocViewFactory(new TocItemParser(), new BaseTocItemInfoParser(), parserManager::getDocument));
+        viewHelpSetParser.registerViewFactory("javax.help.IndexView", new IndexViewFactory(new IndexItemParser(), documentFunction));
+        viewHelpSetParser.registerViewFactory("javax.help.TOCView", new TocViewFactory(new TocItemParser(), new BaseTocItemInfoParser(), documentFunction));
 
-        rootHelpSetParser.registerChildParser("view", viewHelpSetParser);
-
-        return parserManager;
+        return viewHelpSetParser;
     }
 
     @Override
