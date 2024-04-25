@@ -1,5 +1,6 @@
 package de.dhbw.mwulle.jhelp.impl.builder;
 
+import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 
 import java.net.URL;
@@ -13,7 +14,7 @@ public class ViewBuilder {
     private String name;
     private String label;
     private String type;
-    private String image;
+    private MapId image;
 
     public ViewBuilder(URL directory) {
         this.directory = directory;
@@ -59,11 +60,11 @@ public class ViewBuilder {
         this.type = type;
     }
 
-    public String getImage() {
+    public MapId getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MapId image) {
         this.image = image;
     }
 
