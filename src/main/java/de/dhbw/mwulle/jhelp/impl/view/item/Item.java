@@ -1,12 +1,13 @@
 package de.dhbw.mwulle.jhelp.impl.view.item;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.merge.MergeAble;
 import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 
 import java.util.List;
 import java.util.Locale;
 
-public abstract class Item<T extends Item<T>> {
+public abstract class Item<T extends Item<T>> implements MergeAble<T> {
 
     private final Locale language;
     private final String text;

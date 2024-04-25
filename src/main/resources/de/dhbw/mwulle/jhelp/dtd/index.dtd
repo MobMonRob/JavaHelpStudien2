@@ -7,7 +7,7 @@
         <!ATTLIST indexitem
                 text CDATA #REQUIRED
                 target CDATA #IMPLIED
-                mergetype CDATA "javax.help.AppendMerge"
+                mergetype CDATA #IMPLIED
                 expand (true | false | none) "none"
                 presentationtype CDATA #IMPLIED
                 presentationname CDATA #IMPLIED

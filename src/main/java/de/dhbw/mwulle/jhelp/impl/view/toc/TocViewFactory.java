@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
 import de.dhbw.mwulle.jhelp.api.View;
+import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 import de.dhbw.mwulle.jhelp.impl.builder.ViewBuilder;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
 import de.dhbw.mwulle.jhelp.impl.view.ViewFactory;
@@ -29,6 +30,12 @@ public class TocViewFactory implements ViewFactory {
         // TODO 2024-02-21: Handle language attribute from root index element
         Element root = ParserUtil.getElementByTagName("toc", document);
 
-        return new TocView(viewBuilder.getName(), viewBuilder.getLabel(), viewBuilder.getType(), viewBuilder.getMergeType(), viewBuilder.getLanguage(), parser.parse(root), baseTocItemInfoParser.parse(root));
+        MergeType mergeType = viewBuilder.getMergeType();
+        if (mergeType == null) {
+            // From spec, this is default for this view type
+            mergeType = MergeType.fromString("javax.help.AppendMerge");
+        }
+
+        return new TocView(viewBuilder.getName(), viewBuilder.getLabel(), viewBuilder.getType(), mergeType, viewBuilder.getLanguage(), parser.parse(root), baseTocItemInfoParser.parse(root));
     }
 }

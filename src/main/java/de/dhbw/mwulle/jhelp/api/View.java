@@ -1,10 +1,8 @@
 package de.dhbw.mwulle.jhelp.api;
 
-import de.dhbw.mwulle.jhelp.api.merge.MergeType;
+import de.dhbw.mwulle.jhelp.api.merge.MergeAble;
 
-public interface View {
-
-    MergeType getMergeType();
+public interface View extends MergeAble<View> {
 
     String getName();
 
