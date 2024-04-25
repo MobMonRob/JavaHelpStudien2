@@ -45,7 +45,9 @@ public class HelpSetAnnotationProcessor extends LayerGeneratingProcessor {
 
             builder.file(String.format("Services/JavaHelp/%s", fileName)).contents(String.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<!DOCTYPE helpsetlink PUBLIC \"-//DHBW_Karlsruhe//DTD JavaHelp Help Set link 1.0//EN\" \"helpsetlink.dtd\">\n" +
-                    "<helpsetlink url=\"/%s\"/>", packageElement.getQualifiedName().toString().replace('.', '/') + '/' + annotation.helpSet())).write();
+                    "<helpsetlink url=\"/%s\"/>", packageElement.getQualifiedName().toString().replace('.', '/') + '/' + annotation.helpSet()))
+                    .position(annotation.position())
+                    .write();
         }
 
         return false;

@@ -18,4 +18,12 @@ public @interface HelpSetRegistration {
      * @return the path to the help set file, relative to the location of this annotation
      */
     String helpSet();
+
+    /**
+     * Order of different help sets.
+     * The lowest HelpSet is the master help set.
+     *
+     * @return the position of this help set to others
+     */
+    int position() default Integer.MAX_VALUE;
 }
