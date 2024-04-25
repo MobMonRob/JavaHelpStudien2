@@ -2,6 +2,7 @@ package de.dhbw.mwulle.jhelp.impl.view.item;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
+import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 
 import java.util.List;
 import java.util.Locale;
@@ -11,11 +12,11 @@ public abstract class ItemView<T extends Item<T>> implements View {
     private final String name;
     private final String label;
     private final String type;
-    private final String mergeType;
+    private final MergeType mergeType;
     private final Locale language;
     private final List<T> items;
 
-    protected ItemView(String name, String label, String type, String mergeType, Locale language, List<T> items) {
+    protected ItemView(String name, String label, String type, MergeType mergeType, Locale language, List<T> items) {
         this.name = name;
         this.label = label;
         this.type = type;
@@ -40,7 +41,7 @@ public abstract class ItemView<T extends Item<T>> implements View {
     }
 
     @Override
-    public String getMergeType() {
+    public MergeType getMergeType() {
         return mergeType;
     }
 

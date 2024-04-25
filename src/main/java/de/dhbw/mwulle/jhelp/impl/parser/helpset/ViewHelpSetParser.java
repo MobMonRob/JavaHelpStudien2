@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.parser.helpset;
 
 import de.dhbw.mwulle.jhelp.api.View;
+import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 import de.dhbw.mwulle.jhelp.impl.builder.HelpSetBuilder;
 import de.dhbw.mwulle.jhelp.impl.builder.ViewBuilder;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
@@ -22,15 +23,13 @@ public class ViewHelpSetParser implements HelpSetParser {
         ViewBuilder viewBuilder = new ViewBuilder(builder.getDirectory());
 
         String language = element.getAttribute("xml:lang");
-        String mergeType = element.getAttribute("mergetype");
+        MergeType mergeType = MergeType.fromString(element.getAttribute("mergetype"));
 
         if (!language.trim().isEmpty()) {
             viewBuilder.setLanguage(Locale.forLanguageTag(language));
         }
 
-        if (!mergeType.trim().isEmpty()) {
-            viewBuilder.setMergeType(mergeType);
-        }
+        viewBuilder.setMergeType(mergeType);
 
         ParserUtil.foreachChildrenElement(element, child -> {
             ViewParser parser = viewParsers.get(child.getTagName());

@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserUtil;
 import org.w3c.dom.Element;
 
@@ -24,7 +25,7 @@ public class TocItemParser {
         String text = element.getAttribute("text");
         MapId target = MapId.fromString(element.getAttribute("target")); // Optional
         MapId image = MapId.fromString(element.getAttribute("image")); // Optional
-        String mergeType = element.getAttribute("mergetype"); // Optional
+        MergeType mergeType = MergeType.fromString(element.getAttribute("mergetype")); // Optional
         String expandText = element.getAttribute("expand"); // Optional
         String presentationType = element.getAttribute("presentationtype"); // Optional
         String presentationName = element.getAttribute("presentationname"); // Optional

@@ -1,12 +1,14 @@
 package de.dhbw.mwulle.jhelp.impl.builder;
 
+import de.dhbw.mwulle.jhelp.api.merge.MergeType;
+
 import java.net.URL;
 import java.util.Locale;
 
 public class ViewBuilder {
 
     private final URL directory;
-    private String mergeType;
+    private MergeType mergeType;
     private Locale language;
     private String name;
     private String label;
@@ -17,11 +19,11 @@ public class ViewBuilder {
         this.directory = directory;
     }
 
-    public String getMergeType() {
+    public MergeType getMergeType() {
         return mergeType;
     }
 
-    public void setMergeType(String mergeType) {
+    public void setMergeType(MergeType mergeType) {
         this.mergeType = mergeType;
     }
 

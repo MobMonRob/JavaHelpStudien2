@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.view.toc;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
+import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 import de.dhbw.mwulle.jhelp.impl.view.item.Item;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class TocItem extends Item<TocItem> {
 
     private final MapId image;
 
-    public TocItem(Locale language, String text, MapId target, MapId image, String mergeType, String expand, String presentationType, String presentationName, List<TocItem> children) {
+    public TocItem(Locale language, String text, MapId target, MapId image, MergeType mergeType, String expand, String presentationType, String presentationName, List<TocItem> children) {
         super(language, text, target, mergeType, expand, presentationType, presentationName, children);
         this.image = image;
     }
