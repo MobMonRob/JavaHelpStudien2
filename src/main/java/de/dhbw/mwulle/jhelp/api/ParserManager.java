@@ -4,5 +4,5 @@ import java.net.URI;
 
 public interface ParserManager {
 
-    HelpSet parseHelpSet(URI uri);
+    HelpSet parseHelpSet(HelpSetId helpSetId, URI uri);
 }

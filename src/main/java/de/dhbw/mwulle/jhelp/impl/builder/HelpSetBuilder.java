@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.builder;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.HelpSetId;
 import de.dhbw.mwulle.jhelp.api.HelpSetMap;
 import de.dhbw.mwulle.jhelp.api.View;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class HelpSetBuilder {
 
+    private final List<HelpSetId> helpSetIds = new ArrayList<>();
     private final URL directory;
     private final List<View> views = new ArrayList<>();
     private String title;
@@ -44,6 +46,10 @@ public class HelpSetBuilder {
     }
 
     public HelpSet build() {
-        return new HelpSet(title, helpSetMap, views);
+        return new HelpSet(helpSetIds, title, helpSetMap, views);
+    }
+
+    public void addHelpSetId(HelpSetId helpSetId) {
+        helpSetIds.add(helpSetId);
     }
 }

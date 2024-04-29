@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.merge;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.HelpSetId;
 import de.dhbw.mwulle.jhelp.api.HelpSetMap;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.api.View;
@@ -40,7 +41,10 @@ public class MergeManagerImpl implements MergeManager {
             newViews.add(view.merge(otherView.get(), otherView.get().getMergeType(), mergeData));
         }
 
-        return new HelpSet(first.getTitle(), helpSetMap, newViews);
+        List<HelpSetId> helpSetIds = new ArrayList<>(first.getHelpSetIds());
+        helpSetIds.addAll(second.getHelpSetIds());
+
+        return new HelpSet(helpSetIds, first.getTitle(), helpSetMap, newViews);
     }
 
     private HelpSetMap mergeHelpSetMap(HelpSetMap first, HelpSetMap second) {

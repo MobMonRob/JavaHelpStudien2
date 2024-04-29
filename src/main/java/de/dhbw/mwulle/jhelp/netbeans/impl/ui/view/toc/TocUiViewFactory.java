@@ -11,6 +11,7 @@ import java.awt.*;
 
 @ServiceProvider(service = UiViewFactory.class)
 public class TocUiViewFactory implements UiViewFactory {
+
     @Override
     public Component createComponent(Lookup.Provider provider, View view) {
         TocView tocView = (TocView) view; // TODO 2024-02-22: Probably check and handle cases where it is not the correct view

@@ -5,11 +5,13 @@ import java.util.List;
 
 public class HelpSet {
 
+    private final List<HelpSetId> helpSetIds;
     private final String title;
     private final HelpSetMap helpSetMap;
     private final List<View> views;
 
-    public HelpSet(String title, HelpSetMap helpSetMap, List<View> views) {
+    public HelpSet(List<HelpSetId> helpSetIds, String title, HelpSetMap helpSetMap, List<View> views) {
+        this.helpSetIds = helpSetIds;
         this.title = title;
         this.helpSetMap = helpSetMap;
         this.views = Collections.unmodifiableList(views);
@@ -47,5 +49,9 @@ public class HelpSet {
         }
 
         return null;
+    }
+
+    public List<HelpSetId> getHelpSetIds() {
+        return helpSetIds;
     }
 }

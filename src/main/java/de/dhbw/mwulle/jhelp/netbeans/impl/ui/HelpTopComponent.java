@@ -23,6 +23,7 @@ import org.openide.windows.TopComponent;
 
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +57,7 @@ public final class HelpTopComponent extends TopComponent {
 
     private final ContentManager contentManager = new ContentManagerImpl();
 
+    private final List<Closeable> closeableViews = new ArrayList<>();
     private final ChangeAbleLookupHolder<MapIdEntry> mapIdEntryLookupHolder = new ChangeAbleLookupHolder<>();
     // Currently open help set
     private final ChangeAbleLookupHolder<HelpSet> helpSetLookupHolder = new ChangeAbleLookupHolder<>();
@@ -225,6 +227,9 @@ public final class HelpTopComponent extends TopComponent {
                     if (component instanceof Lookup.Provider) { // TODO 2024-02-23: Maybe there is a better way?
                         lookups.add(((Lookup.Provider) component).getLookup());
                     }
+                    if (component instanceof Closeable) {
+                        closeableViews.add((Closeable) component);
+                    }
                     tabbedPane.addTab(NbBundle.getMessage(HelpTopComponent.class, String.format("HelpTopComponent.tabbedPane.view.%s.tabTitle", view.getClass().getName())), component);
                     break dance;
                 }
@@ -237,6 +242,7 @@ public final class HelpTopComponent extends TopComponent {
 
     private void clearPaneTabs() {
         tabbedPane.removeAll();
+        closeViews();
     }
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
@@ -264,6 +270,19 @@ public final class HelpTopComponent extends TopComponent {
 
     @Override
     public void componentClosed() {
+        closeViews();
+    }
+
+    private void closeViews() {
+        for (Closeable closeable : closeableViews) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        closeableViews.clear();
     }
 
     void writeProperties(java.util.Properties p) {

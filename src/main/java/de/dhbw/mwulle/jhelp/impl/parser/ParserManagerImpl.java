@@ -1,6 +1,7 @@
 package de.dhbw.mwulle.jhelp.impl.parser;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
+import de.dhbw.mwulle.jhelp.api.HelpSetId;
 import de.dhbw.mwulle.jhelp.api.ParserManager;
 import de.dhbw.mwulle.jhelp.impl.builder.HelpSetBuilder;
 import de.dhbw.mwulle.jhelp.impl.parser.helpset.HelpSetParser;
@@ -17,6 +18,7 @@ import de.dhbw.mwulle.jhelp.impl.parser.view.LabelViewParser;
 import de.dhbw.mwulle.jhelp.impl.parser.view.NameViewParser;
 import de.dhbw.mwulle.jhelp.impl.view.index.IndexItemParser;
 import de.dhbw.mwulle.jhelp.impl.view.index.IndexViewFactory;
+import de.dhbw.mwulle.jhelp.impl.view.search.SearchViewFactory;
 import de.dhbw.mwulle.jhelp.impl.view.toc.BaseTocItemInfoParser;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocItemParser;
 import de.dhbw.mwulle.jhelp.impl.view.toc.TocViewFactory;
@@ -82,12 +84,13 @@ public class ParserManagerImpl implements ParserManager {
 
         viewHelpSetParser.registerViewFactory("javax.help.IndexView", new IndexViewFactory(new IndexItemParser(), documentFunction));
         viewHelpSetParser.registerViewFactory("javax.help.TOCView", new TocViewFactory(new TocItemParser(), new BaseTocItemInfoParser(), documentFunction));
+        viewHelpSetParser.registerViewFactory("javax.help.SearchView", new SearchViewFactory());
 
         return viewHelpSetParser;
     }
 
     @Override
-    public HelpSet parseHelpSet(URI uri) {
+    public HelpSet parseHelpSet(HelpSetId helpSetId, URI uri) {
         URL url;
         URL directory;
         Document document = null;
@@ -108,6 +111,7 @@ public class ParserManagerImpl implements ParserManager {
         }
 
         HelpSetBuilder helpSetBuilder = new HelpSetBuilder(directory);
+        helpSetBuilder.addHelpSetId(helpSetId);
 
         rootHelpSetParser.parse(helpSetBuilder, root);
 
