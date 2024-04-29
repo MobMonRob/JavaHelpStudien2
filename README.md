@@ -18,10 +18,10 @@ Features it does support:
 - Toc and Index view and selection
 - Viewing one HelpSet
 - Netbeans HelpSet context
-
-Features it does **not** support:
 - Merging multiple HelpSets
 - Fulltext search
+
+Features it does **not** support:
 - Favorites
 - and more
 
