@@ -1,7 +1,5 @@
 package de.dhbw.mwulle.jhelp.api.merge;
 
-import de.dhbw.mwulle.jhelp.impl.view.item.Item;
-
 import java.util.List;
 
 public interface Merger {

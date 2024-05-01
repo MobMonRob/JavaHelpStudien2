@@ -7,7 +7,6 @@ import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.util.Lookup;
-import org.openide.util.Utilities;
 
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;

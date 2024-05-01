@@ -2,13 +2,11 @@ package de.dhbw.mwulle.jhelp.impl.merge;
 
 import de.dhbw.mwulle.jhelp.api.merge.MergeAble;
 import de.dhbw.mwulle.jhelp.api.merge.MergeData;
-import de.dhbw.mwulle.jhelp.api.merge.MergeManager;
 import de.dhbw.mwulle.jhelp.api.merge.MergeOperations;
 import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 import de.dhbw.mwulle.jhelp.api.merge.Merger;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class AppendMerger implements Merger {

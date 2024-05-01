@@ -221,7 +221,8 @@ public final class HelpTopComponent extends TopComponent {
 
         for (View view : helpSetLookupHolder.getValue().getViews()) {
             System.out.println("Got View to open: " + view.getClass());
-            dance: for (UiViewFactory uiViewFactory : uiViewFactories) {
+            dance:
+            for (UiViewFactory uiViewFactory : uiViewFactories) {
                 if (view.getClass() == uiViewFactory.getViewClass()) {
                     Component component = uiViewFactory.createComponent(this, view);
                     if (component instanceof Lookup.Provider) { // TODO 2024-02-23: Maybe there is a better way?

@@ -3,11 +3,9 @@ package de.dhbw.mwulle.jhelp.impl.view.item;
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.View;
 import de.dhbw.mwulle.jhelp.api.merge.MergeData;
-import de.dhbw.mwulle.jhelp.api.merge.MergeManager;
 import de.dhbw.mwulle.jhelp.api.merge.MergeOperations;
 import de.dhbw.mwulle.jhelp.api.merge.MergeType;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;

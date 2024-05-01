@@ -1,6 +1,6 @@
 package de.dhbw.mwulle.jhelp.api.merge;
 
-public interface MergeAble <T extends MergeAble<T>> {
+public interface MergeAble<T extends MergeAble<T>> {
 
     MergeType getMergeType();
 
