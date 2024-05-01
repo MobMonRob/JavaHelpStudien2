@@ -33,7 +33,6 @@ public class ViewHelpSetParser implements HelpSetParser {
 
         ParserUtil.foreachChildrenElement(element, child -> {
             ViewParser parser = viewParsers.get(child.getTagName());
-            System.out.println("[ViewHelpSetParser] Got tag: " + child.getTagName());
 
             if (parser == null) {
                 // TODO log this, we ignore unknown tags -> forwards compatibility

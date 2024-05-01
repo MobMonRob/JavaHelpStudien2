@@ -76,10 +76,8 @@ public abstract class ItemNode<T extends Item<T>> extends AbstractNode {
             return fallback.apply(type);
         }
 
-        System.out.println("Ping");
         HelpSet helpSet = getProvider().getLookup().lookup(HelpSet.class);
         if (helpSet == null) {
-            System.out.println("Peng");
             return fallback.apply(type);
         }
 

@@ -19,7 +19,6 @@ public class MapsHelpSetParser implements HelpSetParser {
 
         ParserUtil.foreachChildrenElement(element, child -> {
             MapsParser parser = mapsParsers.get(child.getTagName());
-            System.out.println("[MapsHelpSetParser] Got tag: " + child.getTagName());
 
             if (parser == null) {
                 // TODO log this, we ignore unknown tags -> forwards compatibility

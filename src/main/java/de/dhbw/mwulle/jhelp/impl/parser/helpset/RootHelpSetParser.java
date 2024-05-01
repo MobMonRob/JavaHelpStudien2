@@ -15,7 +15,6 @@ public class RootHelpSetParser implements HelpSetParser {
     public void parse(HelpSetBuilder builder, Element element) {
         ParserUtil.foreachChildrenElement(element, child -> {
             HelpSetParser parser = helpSetParsers.get(child.getTagName());
-            System.out.println("[RootHelpSetParser] Got tag: " + child.getTagName());
 
             if (parser == null) {
                 // TODO 2023-12-31: log this, we ignore unknown tags -> forwards compatibility
