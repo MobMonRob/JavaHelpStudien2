@@ -22,7 +22,7 @@ public class MapsBuilder {
     }
 
     public HelpSetMap build() {
-        return new HelpSetMap(homeId, language, mapIdEntries);
+        return HelpSetMap.create(homeId, language, mapIdEntries);
     }
 
     public MapId getHomeId() {

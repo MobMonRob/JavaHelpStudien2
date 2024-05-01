@@ -12,11 +12,15 @@ public class MapIdEntry {
     private final Locale language;
     private final List<MapIdEntry> children;
 
-    public MapIdEntry(MapId id, URL url, Locale language, List<MapIdEntry> children) {
+    private MapIdEntry(MapId id, URL url, Locale language, List<MapIdEntry> children) {
         this.id = id;
         this.url = url;
         this.language = language;
         this.children = Collections.unmodifiableList(children);
+    }
+
+    public static MapIdEntry create(MapId id, URL url, Locale language, List<MapIdEntry> children) {
+        return new MapIdEntry(id, url, language, children);
     }
 
     public MapId getId() {

@@ -44,6 +44,6 @@ public class MapIdEntryBuilder {
     }
 
     public MapIdEntry build() {
-        return new MapIdEntry(id, url, language, mapIdEntries);
+        return MapIdEntry.create(id, url, language, mapIdEntries);
     }
 }

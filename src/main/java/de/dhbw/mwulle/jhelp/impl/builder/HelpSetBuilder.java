@@ -46,7 +46,7 @@ public class HelpSetBuilder {
     }
 
     public HelpSet build() {
-        return new HelpSet(helpSetIds, title, helpSetMap, views);
+        return HelpSet.create(helpSetIds, title, helpSetMap, views);
     }
 
     public void addHelpSetId(HelpSetId helpSetId) {

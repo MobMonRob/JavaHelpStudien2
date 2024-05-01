@@ -10,11 +10,15 @@ public class HelpSet {
     private final HelpSetMap helpSetMap;
     private final List<View> views;
 
-    public HelpSet(List<HelpSetId> helpSetIds, String title, HelpSetMap helpSetMap, List<View> views) {
+    private HelpSet(List<HelpSetId> helpSetIds, String title, HelpSetMap helpSetMap, List<View> views) {
         this.helpSetIds = helpSetIds;
         this.title = title;
         this.helpSetMap = helpSetMap;
         this.views = Collections.unmodifiableList(views);
+    }
+
+    public static HelpSet create(List<HelpSetId> helpSetIds, String title, HelpSetMap helpSetMap, List<View> views) {
+        return new HelpSet(helpSetIds, title, helpSetMap, views);
     }
 
     public String getTitle() {

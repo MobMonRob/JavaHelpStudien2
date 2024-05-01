@@ -10,10 +10,14 @@ public class HelpSetMap {
     private final Locale language;
     private final List<MapIdEntry> mapIdEntries;
 
-    public HelpSetMap(MapId homeId, Locale language, List<MapIdEntry> mapIdEntries) {
+    private HelpSetMap(MapId homeId, Locale language, List<MapIdEntry> mapIdEntries) {
         this.homeId = homeId;
         this.language = language;
         this.mapIdEntries = Collections.unmodifiableList(mapIdEntries);
+    }
+
+    public static HelpSetMap create(MapId homeId, Locale language, List<MapIdEntry> mapIdEntries) {
+        return new HelpSetMap(homeId, language, mapIdEntries);
     }
 
     public MapId getHomeId() {

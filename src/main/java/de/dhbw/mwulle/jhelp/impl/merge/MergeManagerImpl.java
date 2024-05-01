@@ -44,7 +44,7 @@ public class MergeManagerImpl implements MergeManager {
         List<HelpSetId> helpSetIds = new ArrayList<>(first.getHelpSetIds());
         helpSetIds.addAll(second.getHelpSetIds());
 
-        return new HelpSet(helpSetIds, first.getTitle(), helpSetMap, newViews);
+        return HelpSet.create(helpSetIds, first.getTitle(), helpSetMap, newViews);
     }
 
     private HelpSetMap mergeHelpSetMap(HelpSetMap first, HelpSetMap second) {
@@ -52,7 +52,7 @@ public class MergeManagerImpl implements MergeManager {
         List<MapIdEntry> newMapIdEntries = new ArrayList<>(first.getMapIdEntries());
         newMapIdEntries.addAll(second.getMapIdEntries());
 
-        return new HelpSetMap(first.getHomeId(), first.getLanguage(), newMapIdEntries);
+        return HelpSetMap.create(first.getHomeId(), first.getLanguage(), newMapIdEntries);
     }
 
     @Override
