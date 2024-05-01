@@ -1,4 +1,4 @@
-package de.dhbw.mwulle.jhelp.netbeans.impl;
+package de.dhbw.mwulle.jhelp.api.search;
 
 import de.dhbw.mwulle.jhelp.api.MapId;
 
@@ -9,17 +9,29 @@ public class SearchResult {
     private final float score;
     private final MapId mapId;
 
-    public SearchResult(float score, MapId mapId) {
+    private SearchResult(float score, MapId mapId) {
         this.score = score;
         this.mapId = mapId;
+    }
+
+    public static SearchResult create(float score, MapId mapId) {
+        return new SearchResult(score, mapId);
+    }
+
+    public MapId getMapId() {
+        return mapId;
     }
 
     public float getScore() {
         return score;
     }
 
-    public MapId getMapId() {
-        return mapId;
+    @Override
+    public String toString() {
+        return "SearchResult{" +
+                "score=" + score +
+                ", mapId=" + mapId +
+                '}';
     }
 
     @Override
@@ -33,13 +45,5 @@ public class SearchResult {
     @Override
     public int hashCode() {
         return Objects.hash(getScore(), getMapId());
-    }
-
-    @Override
-    public String toString() {
-        return "SearchResult{" +
-                "score=" + score +
-                ", mapId=" + mapId +
-                '}';
     }
 }

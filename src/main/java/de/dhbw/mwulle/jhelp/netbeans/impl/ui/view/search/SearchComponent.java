@@ -2,16 +2,15 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.search;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
+import de.dhbw.mwulle.jhelp.api.search.SearchResult;
+import de.dhbw.mwulle.jhelp.api.search.Searcher;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ContentManager;
-import de.dhbw.mwulle.jhelp.netbeans.impl.SearchResult;
-import de.dhbw.mwulle.jhelp.netbeans.impl.Searcher;
 import org.openide.util.Lookup;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.io.Closeable;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class SearchComponent extends JPanel implements Closeable {
     private final Lookup.Provider provider;
     private final Searcher searcher;
     private final JTextField textField;
-    private final JList<SearchResult> jList;
+    private final JList<SearchResultHolder> jList;
 
     public SearchComponent(Lookup.Provider provider, Searcher searcher) {
         super(new BorderLayout());
@@ -63,13 +62,14 @@ public class SearchComponent extends JPanel implements Closeable {
             return;
         }
 
-        List<SearchResult> searchResults = searcher.search(text);
+        List<SearchResult> searchResults = searcher.search(text, 30);
+        searchResults.sort((a, b) -> Float.compare(b.getScore(), a.getScore()));
         System.out.println(searchResults);
-        jList.setListData(searchResults.toArray(new SearchResult[0]));
+        jList.setListData(searchResults.stream().map(SearchResultHolder::new).toArray(SearchResultHolder[]::new));
     }
 
     private void handleSelection(ListSelectionEvent e) {
-        SearchResult result = jList.getSelectedValue();
+        SearchResultHolder result = jList.getSelectedValue();
 
         if (result == null) {
             System.out.println("Nothing selected");
@@ -79,10 +79,10 @@ public class SearchComponent extends JPanel implements Closeable {
         ContentManager contentManager = provider.getLookup().lookup(ContentManager.class);
         HelpSet helpSet = provider.getLookup().lookup(HelpSet.class);
 
-        MapIdEntry mapIdEntry = helpSet.findMapIdEntry(result.getMapId());
+        MapIdEntry mapIdEntry = helpSet.findMapIdEntry(result.getSearchResult().getMapId());
 
         if (mapIdEntry == null) {
-            System.out.println("Did not found Map id " + result.getMapId());
+            System.out.println("Did not found Map id " + result.getSearchResult().getMapId());
             return;
         }
 

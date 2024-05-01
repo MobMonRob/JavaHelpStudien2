@@ -2,6 +2,7 @@ package de.dhbw.mwulle.jhelp.netbeans.impl;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetId;
+import de.dhbw.mwulle.jhelp.api.search.SearchEngine;
 import de.dhbw.mwulle.jhelp.impl.parser.ParserManagerImpl;
 import org.openide.cookies.InstanceCookie;
 import org.openide.loaders.DataObject;

@@ -1,8 +1,10 @@
-package de.dhbw.mwulle.jhelp.netbeans.impl;
+package de.dhbw.mwulle.jhelp.impl.search;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetId;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
+import de.dhbw.mwulle.jhelp.api.search.SearchEngine;
+import de.dhbw.mwulle.jhelp.api.search.Searcher;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -15,8 +17,6 @@ import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.FSDirectory;
 import org.jsoup.Jsoup;
-import org.openide.modules.Places;
-import org.openide.util.lookup.ServiceProvider;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,17 +33,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Stream;
 
-@ServiceProvider(service = SearchEngine.class)
-public class SearchEngine {
+public abstract class LuceneSearchEngine implements SearchEngine {
 
     private static final String INDEX_BASE_LOCATION = "jhelp/index/";
     private static final String INDEX_INFO_FILE = "jhelp-index-info";
 
     private final Map<HelpSetId, File> loadedFiles = new HashMap<>();
 
+    @Override
     public synchronized void indexHelpSet(String buildNumber, HelpSetId identifier, HelpSet helpSet) {
         if (loadedFiles.containsKey(identifier)) {
             System.out.println("Already loaded");
@@ -93,6 +92,7 @@ public class SearchEngine {
         loadedFiles.put(identifier, directory);
     }
 
+    @Override
     public Searcher createSearcher(List<HelpSetId> identifiers) {
         List<File> directories = new ArrayList<>(identifiers.size());
 
@@ -114,11 +114,13 @@ public class SearchEngine {
                 }
             }).toArray(IndexReader[]::new));
 
-            return new Searcher(reader, new IndexSearcher(reader));
+            return new LuceneSearcher(reader, new IndexSearcher(reader));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    protected abstract File getCacheDirectory();
 
     private boolean sameBuild(File directory, String buildNumber) {
         File info = new File(directory, INDEX_INFO_FILE);
@@ -143,7 +145,7 @@ public class SearchEngine {
             identifier = identifier.substring(1);
         }
 
-        return new File(Places.getCacheDirectory(), INDEX_BASE_LOCATION + identifier);
+        return new File(getCacheDirectory(), INDEX_BASE_LOCATION + identifier);
     }
 
     private void indexMapId(IndexWriter indexWriter, List<MapIdEntry> mapIds) {

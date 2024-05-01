@@ -2,8 +2,8 @@ package de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.search;
 
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.View;
+import de.dhbw.mwulle.jhelp.api.search.SearchEngine;
 import de.dhbw.mwulle.jhelp.impl.view.search.SearchView;
-import de.dhbw.mwulle.jhelp.netbeans.impl.SearchEngine;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.view.UiViewFactory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
