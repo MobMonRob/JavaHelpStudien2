@@ -4,13 +4,11 @@
  */
 package de.dhbw.mwulle.jhelp.netbeans.impl;
 
-import de.dhbw.mwulle.jhelp.SearchEngine;
 import de.dhbw.mwulle.jhelp.api.HelpSet;
 import de.dhbw.mwulle.jhelp.api.HelpSetProvider;
 import de.dhbw.mwulle.jhelp.api.MapId;
 import de.dhbw.mwulle.jhelp.api.MapIdEntry;
 import de.dhbw.mwulle.jhelp.netbeans.impl.ui.HelpTopComponent;
-import org.openide.modules.OnStart;
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
@@ -75,14 +73,5 @@ public class JHelpDisplayer implements HelpCtx.Displayer {
         }
 
         return true;
-    }
-
-    @OnStart
-    public static class Initialization implements Runnable {
-
-        @Override
-        public void run() {
-            SearchEngine.deleteIndex();
-        }
     }
 }
