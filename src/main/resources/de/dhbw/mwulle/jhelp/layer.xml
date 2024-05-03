@@ -12,20 +12,10 @@
         </folder>
     </folder>
 
-    <folder name="Services">
-        <folder name="JavaHelp">
-            <!-- Need to keep this here,
-            since for whatever reason xml/entities is not used
-            when reading the xml entity from the Services folder.
-            TODO 2024-03-18: Look into why it is not working -->
-            <file name="helpsetlink.dtd" url="dtd/helpsetlink.dtd"/>
-        </folder>
-    </folder>
-
     <folder name="xml">
         <folder name="entities">
             <folder name="DHBW_Karlsruhe">
-                <file name="DTD_JavaHelp_Help_Set_link_1_0" url="helpsetlink.dtd">
+                <file name="DTD_JavaHelp_Help_Set_link_1_0" url="dtd/helpsetlink.dtd">
                     <attr name="hint.originalPublicID"
                           stringvalue="-//DHBW_Karlsruhe//DTD JavaHelp Help Set link 1.0//EN"/>
                 </file>

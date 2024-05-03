@@ -40,8 +40,7 @@ public class HelpSetLinkReader implements Environment.Provider {
 
                 XMLDataObject xmlDataObject = (XMLDataObject) obj;
                 try {
-                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                    Document document = factory.newDocumentBuilder().parse(xmlDataObject.getPrimaryFile().toURL().toString());
+                    Document document = xmlDataObject.getDocument();
                     ClassLoader classLoader = Lookup.getDefault().lookup(ClassLoader.class);
                     String url = document.getDocumentElement().getAttribute("url");
 
